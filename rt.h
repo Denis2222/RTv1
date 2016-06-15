@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/13 22:31:54 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/06/14 00:56:31 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/06/16 00:17:34 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ typedef	struct	s_vec2
 
 typedef struct	s_camera
 {
-	t_vec4		*position;
-	t_vec4		*orientation;
-	t_vec2		*resolution;
-	t_vec2		*pitch;
+	t_vec4		position;
+	t_vec4		orientation;
+	t_vec2		resolution;
+	t_vec2		pitch;
 	double		focale;
 }				t_camera;
 
