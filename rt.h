@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 15:02:25 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/08 07:29:25 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/08 08:55:25 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 # define KEY_LEFT 123
 # define KEY_RIGHT 124
 # define KEY_SPACEBAR 49
+
+# define KEY_PLUS 69
+# define KEY_MINUS 78
 
 # define MOVESPEED 0.05
 # define ROTSPEED 0.1
@@ -53,9 +56,9 @@ typedef struct	s_map
 
 typedef struct	s_player
 {
-	t_coord		*pos;
-	t_coord		*dir;
-	t_coord		*plane;
+	vector		*pos;
+	vector		*dir;
+	vector		*plane;
 }				t_player;
 
 typedef struct	s_img
@@ -80,6 +83,7 @@ typedef struct	s_keyboard
 	int			right;
 	int			sleft;
 	int			sright;
+	int			res;
 }				t_keyboard;
 
 typedef struct	s_hud
@@ -189,8 +193,8 @@ t_list			*read_file(char	*filepath);
 t_map			*map_parse(t_list	*list);
 void			map_print(t_map	*map);
 
-t_player		*newplayer(double x, double y);
-t_coord			*newcoord(double x, double y);
+t_player		*newplayer();
+vector			*newcoord(float x, float y, float z);
 
 void			draw_dot(t_env *e, int x, int y, int color);
 int				rgb2i(int r, int g, int b);

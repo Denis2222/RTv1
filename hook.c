@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 15:58:49 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/08 05:56:14 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/08 08:53:34 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int		key_press_hook(int keycode, t_env *e)
 {
+	printf("%d", keycode);
 	key_press(&e->key, keycode);
 	if (keycode == KEY_ESC)
 		exit(EXIT_SUCCESS);

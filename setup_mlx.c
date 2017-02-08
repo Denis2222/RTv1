@@ -6,12 +6,13 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 22:54:49 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/08 07:31:33 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/08 08:59:53 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
+#define RESREDUX 8
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 
 /* Multiply two vectors and return the resulting scalar (dot product) */
@@ -86,14 +87,12 @@ bool intersectRaySphere(ray *r, sphere *s, float *t){
                 }else
                         retval = false;
         }
-
-return retval;
+        return retval;
 }
 
 void	raytrace(t_env *e)
 {
-
-	material materials[3];
+	material materials[4];
 	materials[0].diffuse.red = 1;
 	materials[0].diffuse.green = 0;
 	materials[0].diffuse.blue = 0;
@@ -109,7 +108,12 @@ void	raytrace(t_env *e)
 	materials[2].diffuse.blue = 1;
 	materials[2].reflection = 0.9;
 
-	sphere spheres[3];
+  materials[3].diffuse.red = 1;
+	materials[3].diffuse.green = 0;
+	materials[3].diffuse.blue = 0;
+	materials[3].reflection = 0;
+
+	sphere spheres[4];
 	spheres[0].pos.x = 200;
 	spheres[0].pos.y = 300;
 	spheres[0].pos.z = 0;
@@ -119,18 +123,24 @@ void	raytrace(t_env *e)
 	spheres[1].pos.x = 400;
 	spheres[1].pos.y = 400;
 	spheres[1].pos.z = 100;
-	spheres[1].radius = (float)e->player->dir->y*1000;
+	spheres[1].radius = 100;
 	spheres[1].material = 1;
 
-	spheres[2].pos.x = 500;
-	spheres[2].pos.y = 140;
-	spheres[2].pos.z = 0;
+	spheres[2].pos.x = 1500;
+	spheres[2].pos.y = 1040;
+	spheres[2].pos.z = 100;
 	spheres[2].radius = 50;
 	spheres[2].material = 2;
 
+  spheres[3].pos.x = 700;
+  spheres[3].pos.y = 100;
+  spheres[3].pos.z = 100;
+  spheres[3].radius = 200;
+  spheres[3].material = 1;
+
 	light lights[3];
 
-	lights[0].pos.x = 0;
+	lights[0].pos.x = 0+((float)e->player->pos->x * 10);
 	lights[0].pos.y = 240;
 	lights[0].pos.z = -100;
 	lights[0].intensity.red = 1;
@@ -157,7 +167,7 @@ void	raytrace(t_env *e)
 
 	//float dirx = (float)e->player->pos->x;
 	//float diry = (float)e->player->pos->y;
-	printf("%f", (float)e->player->dir->y);
+	//printf("%f", (float)e->player->pos->x);
 
 	x = 0;
 	while (x < WIDTH)
@@ -179,7 +189,7 @@ void	raytrace(t_env *e)
 			r.start.z = -2000;
 
 			r.dir.x = 0;
-			r.dir.y = (float)e->player->pos->y - 2.00;
+			r.dir.y = 0;
 			r.dir.z = 1;
 
 
@@ -189,7 +199,7 @@ void	raytrace(t_env *e)
 							int currentSphere = -1;
 
 							unsigned int i;
-							for(i = 0; i < 3; i++){
+							for(i = 0; i < 4; i++){
 								if(intersectRaySphere(&r, &spheres[i], &t))
 									currentSphere = i;
 							}
@@ -222,11 +232,22 @@ void	raytrace(t_env *e)
 								lightRay.start = newStart;
 								lightRay.dir = vectorScale((1/t), &dist);
 
-								/* Lambert diffusion */
-								float lambert = vectorDot(&lightRay.dir, &n) * coef;
-								red += lambert * currentLight.intensity.red * currentMat.diffuse.red;
-								green += lambert * currentLight.intensity.green * currentMat.diffuse.green;
-								blue += lambert * currentLight.intensity.blue * currentMat.diffuse.blue;
+                /* Calculate shadows */
+        					bool inShadow = false;
+        					unsigned int k;
+        					for (k = 0; k < 3; ++k) {
+        						if (intersectRaySphere(&lightRay, &spheres[k], &t)){
+        							inShadow = true;
+        							break;
+        						}
+        					}
+        					if (!inShadow){
+    								/* Lambert diffusion */
+    								float lambert = vectorDot(&lightRay.dir, &n) * coef;
+    								red += lambert * currentLight.intensity.red * currentMat.diffuse.red;
+    								green += lambert * currentLight.intensity.green * currentMat.diffuse.green;
+    								blue += lambert * currentLight.intensity.blue * currentMat.diffuse.blue;
+                  }
 							}
 							/* Iterate over the reflection */
 							coef *= currentMat.reflection;
@@ -242,14 +263,22 @@ void	raytrace(t_env *e)
 						}while((coef > 0.0f) && (level < 15));
 
 						if (red > 0.00 || green > 0.00 || blue > 0.00){
-							draw_dot(e, x, y, rgb2i(red*255, green*255, blue*255));
-							//printf("COLOR!!!{%f|%f|%f} ", red*255, green*255, blue*255);
+              int xx = 0;
+              int yy = 0;
+              while (xx < e->key.res) {
+                yy = 0;
+                while (yy < e->key.res) {
+							    draw_dot(e, x+xx, y+yy, rgb2i(red*255, green*255, blue*255));
+                  yy++;
+                }
+                xx++;
+              }
+
+              //draw_dot(e, x+1, y+1, rgb2i(red*255, green*255, blue*255));
 						}
-
-
-			y++;
+			y+=e->key.res;
 		}
-		x++;
+		x+=e->key.res;
 	}
 }
 
