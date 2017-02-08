@@ -5,56 +5,204 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/06/13 22:31:54 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/06/16 00:17:34 by dmoureu-         ###   ########.fr       */
+/*   Created: 2016/01/18 15:02:25 by dmoureu-          #+#    #+#             */
+/*   Updated: 2017/02/08 07:29:25 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RT_H
 # define RT_H
 
-# define WIDTH 640
-# define HEIGHT 480
-
+# include <math.h>
 # include "libft/libft.h"
+# include "minilibx/mlx.h"
+# include "geo.h"
 
-typedef struct	s_vec4
+# define WIDTH 1800
+# define HEIGHT 1360
+
+# define NBSPRITE 15
+
+# define KEY_ESC 53
+# define KEY_UP 126
+# define KEY_DOWN 125
+# define KEY_LEFT 123
+# define KEY_RIGHT 124
+# define KEY_SPACEBAR 49
+
+# define MOVESPEED 0.05
+# define ROTSPEED 0.1
+
+# define CR cos(ROTSPEED)
+# define SR sin(ROTSPEED)
+# define C_R cos(-ROTSPEED)
+# define S_R sin(-ROTSPEED)
+
+typedef struct	s_coord
 {
 	double		x;
 	double		y;
-	double		z;
-	double		w;
-}				t_vec4;
+}				t_coord;
 
-typedef	struct	s_vec2
+typedef struct	s_map
 {
+	int			**wall;
 	int			x;
 	int			y;
-}				t_vec2;
+}				t_map;
 
-typedef struct	s_camera
+typedef struct	s_player
 {
-	t_vec4		position;
-	t_vec4		orientation;
-	t_vec2		resolution;
-	t_vec2		pitch;
-	double		focale;
-}				t_camera;
+	t_coord		*pos;
+	t_coord		*dir;
+	t_coord		*plane;
+}				t_player;
 
-typedef struct	s_color
+typedef struct	s_img
 {
-	int			red;
-	int			green;
-	int			blue;
-}				t_color;
+	int			width;
+	int			height;
+	char		*buffer;
+}				t_img;
 
-typedef struct	s_material
+typedef struct	s_sprite
 {
-	t_color		*ambiant;
-	t_color		*diffuse;
-	t_color		*reflexion;
-	t_color		*specular;
-	int			opacity;
-}				t_material;
+	double		x;
+	double		y;
+	int			texture;
+}				t_sprite;
 
+typedef struct	s_keyboard
+{
+	int			up;
+	int			down;
+	int			left;
+	int			right;
+	int			sleft;
+	int			sright;
+}				t_keyboard;
+
+typedef struct	s_hud
+{
+	int			camx;
+	int			camy;
+	int			w;
+	int			h;
+	int			texture;
+	int			c;
+	int			nb;
+}				t_hud;
+
+typedef struct	s_env
+{
+	void		*mlx;
+	void		*win;
+	void		*img;
+	char		*imgpx;
+	int			bpp;
+	int			size_line;
+	int			endian;
+	t_map		*map;
+	t_player	*player;
+	t_img		*wall[10];
+	t_img		*spr[8];
+	t_hud		hud[8];
+	t_sprite	sprite[NBSPRITE];
+	t_keyboard	key;
+}				t_env;
+
+typedef struct	s_raycast
+{
+	double		camerax;
+	double		rayposx;
+	double		rayposy;
+	double		raydirx;
+	double		raydiry;
+	double		mapx;
+	double		mapy;
+	double		sidedistx;
+	double		sidedisty;
+	double		deltadistx;
+	double		deltadisty;
+	double		stepx;
+	double		stepy;
+	double		perpwalldist;
+	int			hit;
+	int			side;
+	double		zbuffer[WIDTH];
+}				t_raycast;
+
+typedef struct	s_ray
+{
+	int			lineheight;
+	int			drawstart;
+	int			drawend;
+	int			x;
+	int			y;
+	double		wallx;
+	int			texx;
+	int			texy;
+
+	double		floorxwall;
+	double		floorywall;
+	double		distwall;
+	double		distplayer;
+	double		currentdist;
+	double		weight;
+
+	double		currentfloorx;
+	double		currentfloory;
+
+	int			floortexx;
+	int			floortexy;
+}				t_ray;
+
+typedef struct	s_raysprite
+{
+	int			i;
+	double		spritex;
+	double		spritey;
+	double		invdet;
+	double		tx;
+	double		ty;
+	int			spritescreenx;
+	int			spriteheight;
+	int			drawstarty;
+	int			drawendy;
+	int			spritewidth;
+	int			drawstartx;
+	int			drawendx;
+	int			stripe;
+	int			y;
+	int			texx;
+	int			d;
+	int			texy;
+}				t_raysprite;
+
+void			setup_mlx(t_player *player, t_map *map);
+int				key_press_hook(int keycode, t_env *e);
+int				key_release_hook(int keycode, t_env *e);
+
+int				expose_hook(t_env *e);
+
+t_list			*read_file(char	*filepath);
+t_map			*map_parse(t_list	*list);
+void			map_print(t_map	*map);
+
+t_player		*newplayer(double x, double y);
+t_coord			*newcoord(double x, double y);
+
+void			draw_dot(t_env *e, int x, int y, int color);
+int				rgb2i(int r, int g, int b);
+int				getcolor(t_img *img, int x, int y, int fade);
+void			drawbyside(t_env *e, t_raycast *rc, int x, int y);
+
+void			initkeyboard(t_env *e);
+void			key_press(t_keyboard *key, int keycode);
+void			key_release(t_keyboard *key, int keycode);
+void			key_up_down(t_env *e);
+void			key_left_right(t_env *e);
+
+
+void			render(t_env *e);
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/26 14:35:10 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/05/20 02:26:46 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/01/08 12:59:01 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@
 # include <stdlib.h>
 # include <string.h>
 # include "get_next_line.h"
-# include "printf/ft_printf.h"
 
 int					ft_abs(int n);
-intmax_t			ft_atoi(const char *str);
+int					ft_atoi(const char *str);
 size_t				ft_strlen(const char *str);
 int					ft_strcmp(char *s1, const char *s2);
 int					ft_strncmp(char *s1, const char *s2, size_t n);
@@ -41,7 +40,6 @@ char				*ft_strncpy(char *dest, const char *src, size_t n);
 char				*ft_strcat(char *dest, const char *src);
 char				*ft_strncat(char *dest, const char *src, size_t nb);
 size_t				ft_strlcat(char *dest, const char *src, size_t nb);
-char				*ft_strrepchr(char *str, char c, char n);
 char				*ft_strdup(char *src);
 void				ft_bzero(void *s, size_t n);
 void				*ft_memset(void *s, int c, size_t n);
@@ -55,7 +53,6 @@ char				*ft_strrchr(const char *s, int c);
 size_t				ft_strlcat(char *dest, const char *src, size_t size);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
-char				*ft_strtolower(char *str);
 void				ft_putchar(char c);
 void				ft_putstr(char *str);
 void				ft_putnbr(int nbr);
@@ -73,7 +70,6 @@ int					ft_strnequ(char const *s1, char const *s2, size_t n);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s);
-char				*ft_strtrimfree(char *s);
 char				**ft_strsplit(char const *s, char c);
 char				*ft_itoa(int n);
 void				ft_putendl(char const *s);
@@ -100,12 +96,7 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 t_list				*ft_lstrev(t_list *lst);
 
 int					ft_sqrt(int nb);
-long				ft_pow(int nb, int e);
 int					ft_lstlen(t_list *lst);
 int					ft_tablen(char **tab);
-void				ft_tabfree(char **tab);
-char				*ft_strrepchrbystr(char *str, char c, char *rep);
-int					ft_streachr(char *str, int(f)(int));
-int					ft_strcountchr(char *str, char chr);
 
 #endif

@@ -5,57 +5,23 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/06/13 22:31:07 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/06/16 01:44:49 by dmoureu-         ###   ########.fr       */
+/*   Created: 2016/01/18 15:03:39 by dmoureu-          #+#    #+#             */
+/*   Updated: 2017/02/08 07:19:55 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-#
 
-t_vec4		vec4(double x, double y, double z, double w)
+int	main(void)
 {
-	t_vec4 new;
+	t_map		*map;
+	t_list		*list;
+	t_player	*player;
 
-	new.x = x;
-	new.y = y;
-	new.z = z;
-	new.w = w;
-	return (new);
-}
-
-t_vec2		vec2(double x, double y)
-{
-	t_vec2 new;
-
-	new.x = x;
-	new.y = y;
-	return (new);
-}
-
-t_camera	camera(t_vec4 position, t_vec4 orientation,
-					double focale, t_vec2 pitch)
-{
-	t_camera new;
-
-	new.position = position;
-	new.orientation = orientation;
-	new.pitch = pitch;
-	new.focale = focale;
-	new.resolution = vec2(WIDTH, HEIGHT);
-	return (new);
-}
-
-int			main(void)
-{
-	t_camera	cam;
-
-	cam = camera(
-		vec4(1.0, 2.0, 3.0, 0.0),
-		vec4(1.0, 1.2, 3.0, 1.0),
-		1.0,
-		vec2(1.0, 1.0)
-	);
-	printf("%f", cam.orientation.y);
+	setbuf(stdout, NULL);
+	list = read_file("./map/lvl1.w3d");
+	map = map_parse(ft_lstrev(list));
+	player = newplayer(2, 2);
+	setup_mlx(player, map);
 	return (0);
 }

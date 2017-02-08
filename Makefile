@@ -1,33 +1,43 @@
-SRCS = main.c
+.PHONY: libft minilibx
 
-NAME = RTv1
-GCC_FLAGS = -Wall -Werror -Wextra
-CC = gcc $(GCC_FLAGS)
-SRCDIR = ./
-OBJDIR = ./objs
-AR = ar -cq
-RM = rm -rf
-OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
-LIBFT = ./libft/libft.a
+SRCS = map.c \
+	   read.c \
+	   player.c \
+	   coord.c \
+	   setup_mlx.c \
+	   draw.c \
+	   texture.c \
+	   keyboard.c \
+	   sprite.c \
+	   hook.c \
+	   main.c
 
-all: $(NAME)
+NAME = wolf3d
+GCC_FLAG = -Wall -Werror -Wextra -g
+CC = gcc $(GCC_FLAG)
 
-$(LIBFT):
-	@make -C libft
-	@echo $(SRC_LIB_O)
+OBJS = $(SRCS:.c=.o)
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) -o $(NAME) $(OBJS) -lft -L./libft/ -lncurses
+all: libft minilibx $(NAME)
 
-$(addprefix $(OBJDIR)/, %.o): $(addprefix $(SRCDIR)/, %.c)
-	@mkdir -p $(OBJDIR)
-	@$(CC) -o $@ -c $^
+libft:
+	make -C ./libft/
+
+minilibx:
+	make -C ./minilibx/
+
+$(%.o): $(%.c)
+	$(CC) -o $@ -c $^
+
+$(NAME): $(OBJS)
+	$(CC) -o $@ $^ -Lminilibx/ -lmlx -framework OPENGL -framework Appkit -Llibft -lft
 
 clean:
-	@$(RM) $(OBJDIR)
+	rm -f $(OBJS)
 
 fclean: clean
-	@$(RM) $(NAME)
-	@make -C libft fclean
+	rm -f $(NAME)
+	make -C libft/ fclean
+	make -C minilibx/ clean
 
 re: fclean all
