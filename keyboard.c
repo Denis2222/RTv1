@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 13:52:36 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/08 09:01:44 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/11 20:26:55 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ void	key_press(t_keyboard *key, int keycode)
 		key->right = 1;
 	}
 
-	if (keycode == KEY_PLUS)
+	if (keycode == KEY_PLUS || keycode == KEY_K)
 		key->res += 1;
-	if (keycode == KEY_MINUS)
+	if (keycode == KEY_MINUS || keycode == KEY_L)
 		key->res -= 1;
 
 	if (key->res<=0)
 		key->res = 1;
-
+		//printf(" %d  ",keycode);
 }
 
 void	key_release(t_keyboard *key, int keycode)

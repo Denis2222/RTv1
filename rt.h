@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 15:02:25 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/08 08:55:25 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/11 20:26:15 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 # define KEY_LEFT 123
 # define KEY_RIGHT 124
 # define KEY_SPACEBAR 49
+
+# define KEY_K 40
+# define KEY_L 37
 
 # define KEY_PLUS 69
 # define KEY_MINUS 78
