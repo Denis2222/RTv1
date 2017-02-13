@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 15:02:25 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/08 05:55:37 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/13 20:52:46 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,13 @@ typedef struct{
         float radius;
         int material;
 }sphere;
+
+/* Sphere Primitive definition */
+typedef struct{
+        vector pos;
+        vector dir;
+        int material;
+}plane;
 
 /* Colour definition */
 typedef struct{
