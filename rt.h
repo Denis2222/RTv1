@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 15:02:25 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/08 08:55:25 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/13 19:24:21 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ typedef struct	s_raysprite
 	int			texy;
 }				t_raysprite;
 
-void			setup_mlx(t_player *player, t_map *map);
+void			setup_mlx(t_player *player);
 int				key_press_hook(int keycode, t_env *e);
 int				key_release_hook(int keycode, t_env *e);
 
@@ -209,4 +209,7 @@ void			key_left_right(t_env *e);
 
 
 void			render(t_env *e);
+
+void			raytrace(t_env *e);
+
 #endif

@@ -10,9 +10,10 @@ SRCS = map.c \
 	   keyboard.c \
 	   sprite.c \
 	   hook.c \
+		 raytrace.c \
 	   main.c
 
-NAME = wolf3d
+NAME = rtv1
 GCC_FLAG = -Wall -Werror -Wextra -g
 CC = gcc $(GCC_FLAG)
 
