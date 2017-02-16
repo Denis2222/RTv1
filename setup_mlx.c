@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 22:54:49 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/13 19:24:04 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/16 00:56:21 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ void	render(t_env *e)
 
 	raytrace(e);
 	mlx_put_image_to_window(e->mlx, e->win, e->img, 0, 0);
-	usleep(500);
+	usleep(50);
 	mlx_destroy_image(e->mlx, e->img);
 }

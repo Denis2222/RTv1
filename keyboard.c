@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 13:52:36 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/11 20:26:55 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/15 22:34:25 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ void	initkeyboard(t_env *e)
 	e->key.right = 0;
 	e->key.sleft = 0;
 	e->key.sright = 0;
+
+	e->key.rup = 0;
+	e->key.rdown = 0;
+	e->key.rleft = 0;
+	e->key.rright = 0;
+
 	e->key.res = 4;
 }
 
@@ -29,16 +35,29 @@ void	key_press(t_keyboard *key, int keycode)
 		key->up = 1;
 	if (keycode == KEY_DOWN)
 		key->down = 1;
-	if (keycode == KEY_LEFT)
-	{
+	if (keycode == KEY_LEFT){
 		key->right = 0;
 		key->left = 1;
 	}
-	if (keycode == KEY_RIGHT)
-	{
+	if (keycode == KEY_RIGHT){
 		key->left = 0;
 		key->right = 1;
 	}
+
+
+	if (keycode == KEY_W)
+		key->rup = 1;
+	if (keycode == KEY_S)
+		key->rdown = 1;
+	if (keycode == KEY_D){
+		key->rright = 0;
+		key->rleft = 1;
+	}
+	if (keycode == KEY_A){
+		key->rleft = 0;
+		key->rright = 1;
+	}
+
 
 	if (keycode == KEY_PLUS || keycode == KEY_K)
 		key->res += 1;
@@ -47,7 +66,6 @@ void	key_press(t_keyboard *key, int keycode)
 
 	if (key->res<=0)
 		key->res = 1;
-		//printf(" %d  ",keycode);
 }
 
 void	key_release(t_keyboard *key, int keycode)
@@ -60,29 +78,52 @@ void	key_release(t_keyboard *key, int keycode)
 		key->left = 0;
 	if (keycode == KEY_RIGHT)
 		key->right = 0;
+
+
+		if (keycode == KEY_W)
+			key->rup = 0;
+		if (keycode == KEY_S)
+			key->rdown = 0;
+		if (keycode == KEY_A)
+			key->rleft = 0;
+			key->rright = 0;
+		if (keycode == KEY_D)
+			key->rright = 0;
+			key->rleft = 0;
 }
 
 void	key_up_down(t_env *e)
 {
-	if (e->key.up)
-	{
-			e->player->pos->x += 1;
-	}
-	if (e->key.down)
-	{
+	if (e->key.up){
 			e->player->pos->x -= 1;
 	}
+	if (e->key.down){
+			e->player->pos->x += 1;
+	}
+
+	if (e->key.rup){
+			e->player->dir->x -= 1;
+	}
+	if (e->key.rdown){
+			e->player->dir->x += 1;
+	}
+
+
+	if (e->key.rleft){
+			e->player->dir->y -= 1;
+	}
+	if (e->key.rright){
+			e->player->dir->y += 1;
+	}
+
 }
 
 void	key_left_right(t_env *e)
 {
-	if (e->key.left)
-	{
-		printf("WTF");
-		e->player->dir->y = e->player->dir->y - 1;
+	if (e->key.left){
+		e->player->pos->y += 1;
 	}
-	if (e->key.right)
-	{
-		e->player->dir->y = e->player->dir->y + 1;
+	if (e->key.right){
+		e->player->pos->y -= 1;
 	}
 }

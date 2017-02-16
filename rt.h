@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 15:02:25 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/13 22:54:22 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/15 22:04:43 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@
 
 # define KEY_K 40
 # define KEY_L 37
+
+# define KEY_W 13
+# define KEY_A 0
+# define KEY_S 1
+# define KEY_D 2
 
 # define KEY_PLUS 69
 # define KEY_MINUS 78
@@ -87,6 +92,12 @@ typedef struct	s_keyboard
 	int			sleft;
 	int			sright;
 	int			res;
+
+	int			rup;
+	int			rdown;
+	int			rleft;
+	int			rright;
+
 }				t_keyboard;
 
 typedef struct	s_hud

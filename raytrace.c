@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/13 19:23:21 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/13 22:03:37 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/16 01:20:36 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,63 @@ vector vectorAdd(vector *v1, vector *v2){
         return result;
 }
 
-bool intersectRayPlane(ray *r, plane *p, float *t)
-{
+float vectorLength(vector *v){
+  return sqrtf(v->x * v->x + v->y * v->y + v->z * v->z);
+}
+
+void vectorNormalize(vector *v){
+  float len = vectorLength(v);
+  float factor;
+    if(len == 0.0f)
+        return ;
+    else
+    {
+        factor = 1.0f / len;
+        v->x *= factor;
+        v->y *= factor;
+        v->z *= factor;
+    }
+}
+
+void vectorPrint(vector *v) {
+  printf(" Vect:[%f %f %f]", v->x, v->y, v->z);
+}
+/*
+** Vector Rotation
+*/
+void vectorRotate(vector *v, char type, double angle){
+  double rad = angle / M_PI;
+  float matrixrotx[3][3] = 	{{1, 0, 0                }, {0, cos(rad) , sin(rad)  }, {0, -sin(rad),  cos(rad)}};
+  float matrixroty[3][3] = 	{{cos(rad), 0 , -sin(rad)}, {0, 1, 0                 }, {sin(rad), 0, cos(rad)  }};
+  float matrixrotz[3][3] = 	{{cos(rad) ,sin(rad) , 0 }, {-sin(rad) , cos(rad) , 0}, {0, 0, 1                }};
+
+  vector new;
+
+  if (type == 'x'){
+    new.x = matrixrotx[0][0] * v->x + matrixrotx[1][0] * v->y + matrixrotx[2][0] * v->z;
+    new.y = matrixrotx[0][1] * v->x + matrixrotx[1][1] * v->y + matrixrotx[2][1] * v->z;
+    new.z = matrixrotx[0][2] * v->x + matrixrotx[1][2] * v->y + matrixrotx[2][2] * v->z;
+  }
+
+  if (type == 'y') {
+    new.x = matrixroty[0][0] * v->x + matrixroty[1][0] * v->y + matrixroty[2][0] * v->z;
+    new.y = matrixroty[0][1] * v->x + matrixroty[1][1] * v->y + matrixroty[2][1] * v->z;
+    new.z = matrixroty[0][2] * v->x + matrixroty[1][2] * v->y + matrixroty[2][2] * v->z;
+  }
+
+  if (type == 'z') {
+    new.x = matrixrotz[0][0] * v->x + matrixrotz[1][0] * v->y + matrixrotz[2][0] * v->z;
+    new.y = matrixrotz[0][1] * v->x + matrixrotz[1][1] * v->y + matrixrotz[2][1] * v->z;
+    new.z = matrixrotz[0][2] * v->x + matrixrotz[1][2] * v->y + matrixrotz[2][2] * v->z;
+  }
+
+  v->x = new.x;
+  v->y = new.y;
+  v->z = new.z;
+}
+
+
+bool intersectRayPlane(ray *r, plane *p, float *t){
   float denom = vectorDot(&p->dir,&r->dir);
 
   if (denom > 0.001f) {
@@ -119,17 +174,33 @@ void draw_pix(int x, int y, t_env *e, material *materials, sphere *spheres, ligh
   int level = 0;
   float coef = 1.0;
 
-  r.start.x = x;
-  r.start.y = y;
-  r.start.z = -2000;
+  float imageAspectRatio = WIDTH / (float)HEIGHT; // assuming width > height
+  float Px = (2 * ((x + 0.5) / WIDTH) - 1) * tan(60 / 2 * M_PI / 180) * imageAspectRatio;
+  float Py = (1 - 2 * ((y + 0.5) / HEIGHT) * tan(60 / 2 * M_PI / 180));
 
-  r.dir.x = 0;
-  r.dir.y = 0;
-  r.dir.z = 1;
+
+  r.start.x = (float)e->player->pos->x;
+  r.start.y =
+  r.start.z = (float)e->player->pos->y;
+
+  r.dir.x = Px;
+  r.dir.y = Py;//+(float)e->player->dir->y;
+  r.dir.z = -1;
+
+  vectorNormalize(&r.dir);
+
+
+  //vectorPrint(&r.dir);
+
+  vectorRotate(&r.dir, 'x', (double)e->player->dir->x*0.1);
+  vectorRotate(&r.dir, 'y', (double)e->player->dir->y*0.1);
+  //vectorNormalize(&r.dir);
+  //vectorRotate(&r.dir, 'z', (double)e->player->dir->y*0.1);
 
 	do{
 		/* Find closest intersection */
 		float t = 20000.0f;
+
 		int currentSphere = -1;
     //int currentPlane = -1;
 
@@ -139,6 +210,7 @@ void draw_pix(int x, int y, t_env *e, material *materials, sphere *spheres, ligh
 				currentSphere = i;
 		}
 
+    /* Find something */
 		if(currentSphere != -1) {
 
 			vector scaled = vectorScale(t, &r.dir);
@@ -146,8 +218,13 @@ void draw_pix(int x, int y, t_env *e, material *materials, sphere *spheres, ligh
 
 			/* Find the normal for this new vector at the point of intersection */
 			vector n = vectorSub(&newStart, &spheres[currentSphere].pos);
-			float temp = vectorDot(&n, &n);
-			if(temp == 0) break;
+      //vectorPrint(&n);
+      float temp = vectorDot(&n, &n);
+      //printf("Float:%f     ", temp);
+			if(temp == 0) {
+        //ft_printf("BREAK");
+        break;
+      }
 
 			temp = 1.0f / sqrtf(temp);
 			n = vectorScale(temp, &n);
@@ -157,7 +234,7 @@ void draw_pix(int x, int y, t_env *e, material *materials, sphere *spheres, ligh
 
 		/* Find the value of the light at this point */
 		unsigned int j;
-		for(j=0; j < 3; j++){
+		for(j=0; j < 1; j++){
 			light currentLight = lights[j];
 			vector dist = vectorSub(&currentLight.pos, &newStart);
 			if(vectorDot(&n, &dist) <= 0.0f) continue;
@@ -199,7 +276,7 @@ void draw_pix(int x, int y, t_env *e, material *materials, sphere *spheres, ligh
      break;
   }
 
-	}while((coef > 0.0f) && (level < 15));
+}while((coef > 0.0f) && (level < 15));
 
 	if (red > 0.00 || green > 0.00 || blue > 0.00){
     int xx = 0;
@@ -226,12 +303,12 @@ void	raytrace(t_env *e)
 	materials[1].diffuse.red = 0;
 	materials[1].diffuse.green = 1;
 	materials[1].diffuse.blue = 0;
-	materials[1].reflection = 0.5;
+	materials[1].reflection = 0;
 
 	materials[2].diffuse.red = 0;
 	materials[2].diffuse.green = 0;
 	materials[2].diffuse.blue = 1;
-	materials[2].reflection = 0.9;
+	materials[2].reflection = 0;
 
   materials[3].diffuse.red = 1;
 	materials[3].diffuse.green = 0;
@@ -241,25 +318,25 @@ void	raytrace(t_env *e)
 	sphere spheres[4];
 	spheres[0].pos.x = 200;
 	spheres[0].pos.y = 300;
-	spheres[0].pos.z = 0;
+	spheres[0].pos.z = -500;
 	spheres[0].radius = 100;
 	spheres[0].material = 0;
 
 	spheres[1].pos.x = 400;
-	spheres[1].pos.y = 400;
-	spheres[1].pos.z = 100;
+	spheres[1].pos.y = 800;
+	spheres[1].pos.z = -800;
 	spheres[1].radius = 100;
 	spheres[1].material = 1;
 
-	spheres[2].pos.x = 1500;
-	spheres[2].pos.y = 1040;
-	spheres[2].pos.z = 100;
+	spheres[2].pos.x = 0;
+	spheres[2].pos.y = 0;
+	spheres[2].pos.z = -100;
 	spheres[2].radius = 50;
 	spheres[2].material = 2;
 
-  spheres[3].pos.x = 700;
+  spheres[3].pos.x = 900;
   spheres[3].pos.y = 100;
-  spheres[3].pos.z = 100;
+  spheres[3].pos.z = -2000;
   spheres[3].radius = 200;
   spheres[3].material = 1;
 
@@ -274,23 +351,23 @@ void	raytrace(t_env *e)
 
 	light lights[3];
 
-	lights[0].pos.x = 0+((float)e->player->pos->x * 10);
-	lights[0].pos.y = 240;
-	lights[0].pos.z = -100;
+	lights[0].pos.x = 0;
+	lights[0].pos.y = 0;
+	lights[0].pos.z = -200;
 	lights[0].intensity.red = 1;
 	lights[0].intensity.green = 1;
 	lights[0].intensity.blue = 1;
 
-	lights[1].pos.x = 3200;
-	lights[1].pos.y = 3000;
-	lights[1].pos.z = -1000;
+	lights[1].pos.x = 0;
+	lights[1].pos.y = 0;
+	lights[1].pos.z = 0;
 	lights[1].intensity.red = 0.6;
 	lights[1].intensity.green = 0.7;
 	lights[1].intensity.blue = 1;
 
 	lights[2].pos.x = 600;
 	lights[2].pos.y = 0;
-	lights[2].pos.z = -100;
+	lights[2].pos.z = -600;
 	lights[2].intensity.red = 0.3;
 	lights[2].intensity.green = 0.5;
 	lights[2].intensity.blue = 1;
