@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 13:52:36 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/15 22:34:25 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/16 09:57:26 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,35 +95,31 @@ void	key_release(t_keyboard *key, int keycode)
 void	key_up_down(t_env *e)
 {
 	if (e->key.up){
-			e->player->pos->x -= 1;
+			e->scene.camera.pos.x -= 1;
 	}
 	if (e->key.down){
-			e->player->pos->x += 1;
+			e->scene.camera.pos.x += 1;
 	}
-
 	if (e->key.rup){
-			e->player->dir->x -= 1;
+			e->scene.camera.pos.x -= 1;
 	}
 	if (e->key.rdown){
-			e->player->dir->x += 1;
+			e->scene.camera.pos.x += 1;
 	}
-
-
 	if (e->key.rleft){
-			e->player->dir->y -= 1;
+			e->scene.camera.pos.y -= 1;
 	}
 	if (e->key.rright){
-			e->player->dir->y += 1;
+			e->scene.camera.pos.y += 1;
 	}
-
 }
 
 void	key_left_right(t_env *e)
 {
 	if (e->key.left){
-		e->player->pos->y += 1;
+		e->scene.camera.pos.y += 1;
 	}
 	if (e->key.right){
-		e->player->pos->y -= 1;
+		e->scene.camera.pos.y -= 1;
 	}
 }

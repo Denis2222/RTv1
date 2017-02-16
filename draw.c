@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 23:23:52 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/08 05:56:11 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/16 09:07:42 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,31 +38,4 @@ void	draw_dot(t_env *e, int x, int y, int color)
 	e->imgpx[i] = b;
 	e->imgpx[i + 1] = g;
 	e->imgpx[i + 2] = r;
-}
-
-int		getcolor(t_img *img, int x, int y, int fade)
-{
-	int	color;
-	int	c;
-
-	fade /= 8;
-	c = (y * img->width + x) * 4;
-	color = img->buffer[c];
-	if (color == -120 && img->buffer[c + 1] == 0 && img->buffer[c + 2] == -104)
-		return (256 * 256 * 256 + 256 * 256 + 256);
-	color += img->buffer[c + 1] * 256;
-	color += img->buffer[c + 2] * 256 * 256;
-	return (color);
-}
-
-void	drawbyside(t_env *e, t_raycast *rc, int x, int y)
-{
-	if (rc->raydiry > 0 && rc->side)
-		draw_dot(e, x, y, 0xFF0000);
-	if (rc->raydiry < 0 && rc->side)
-		draw_dot(e, x, y, 0x00FF00);
-	if (rc->raydirx > 0 && rc->side == 0)
-		draw_dot(e, x, y, 0x0000FF);
-	if (rc->raydirx < 0 && rc->side == 0)
-		draw_dot(e, x, y, 0xAA00BB);
 }

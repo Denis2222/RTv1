@@ -1,16 +1,13 @@
 .PHONY: libft minilibx
 
-SRCS = map.c \
-	   read.c \
-	   player.c \
-	   coord.c \
-	   setup_mlx.c \
-	   draw.c \
-	   texture.c \
+SRCS = draw.c \
 	   keyboard.c \
-	   sprite.c \
 	   hook.c \
 		 raytrace.c \
+		 vector/vector.c \
+		 intersect.c \
+		 object.c \
+		 color.c \
 	   main.c
 
 NAME = rtv1

@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   coord.c                                            :+:      :+:    :+:   */
+/*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/18 18:08:42 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/08 07:52:08 by dmoureu-         ###   ########.fr       */
+/*   Created: 2017/02/16 18:53:38 by dmoureu-          #+#    #+#             */
+/*   Updated: 2017/02/16 18:55:22 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-vector	*newcoord(float x, float y, float z)
+t_color *new_color(int r, int g, int b)
 {
-	vector *coord;
+  t_color *color;
 
-	coord = malloc(sizeof(vector));
-	coord->x = x;
-	coord->y = y;
-	coord->y = z;
-	return (coord);
+  color = (t_color*)malloc(sizeof(t_color));
+  color->r = r;
+  color->g = g;
+  color->b = b;
+  return (color);
 }
