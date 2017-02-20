@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 15:03:39 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/16 19:10:09 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/20 23:39:23 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,24 @@
 void init(t_env *e)
 {
 	e->objects = NULL;
-	e->objects = object_add(&(e->objects), object_new(SPHERE));
-	e->objects = object_add(&(e->objects), object_new(SPHERE));
-	e->objects = object_add(&(e->objects), object_new(SPHERE));
-	e->objects = object_add(&(e->objects), object_new(SPHERE));
-	e->objects = object_add(&(e->objects), object_new(SPHERE));
-	e->objects = object_add(&(e->objects), object_new(SPHERE));
-	e->objects = object_add(&(e->objects), object_new(SPHERE));
-	e->objects = object_add(&(e->objects), object_new(SPHERE));
+	e->objects = object_add(&(e->objects), object_new(SPHERE, 0, 20, -30));
+	//e->objects = object_add(&(e->objects), object_new(SPHERE, 25, 50, -70));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+
 /*
 	e->lights[0].pos.x = 0;
 	e->lights[0].pos.y = 0;
@@ -34,9 +44,9 @@ void init(t_env *e)
 	e->lights[0].color.x = 200;
 	e->lights[0].color.y = 0;
 	e->lights[0].color.z = 0;
-
 */
-	e->camera.pov = 45;
+
+	e->camera.pov = 90;
 	e->camera.pos.x = 0;
 	e->camera.pos.y = 0;
 	e->camera.pos.z = 0;
@@ -68,7 +78,8 @@ int	main(void)
 	mlx_hook(e.win, 2, 1, key_press_hook, &e);
 	mlx_hook(e.win, 3, 1, key_release_hook, &e);
 	mlx_expose_hook(e.win, expose_hook, &e);
-	mlx_loop_hook(e.mlx, &get_loop_hook, &e);
+	//mlx_loop_hook(e.mlx, &get_loop_hook, &e);
+	render(&e);
 	mlx_loop(e.mlx);
 	return (0);
 }
@@ -80,8 +91,9 @@ void	render(t_env *e)
 	e->img = mlx_new_image(e->mlx, WIDTH, HEIGHT);
 	e->imgpx = mlx_get_data_addr(e->img,
 	&(e->bpp), &(e->size_line), &(e->endian));
-	printf("NB objet: %d", object_count(e->objects));
+
 	raytrace(e);
+
 	mlx_put_image_to_window(e->mlx, e->win, e->img, 0, 0);
 	usleep(50);
 	mlx_destroy_image(e->mlx, e->img);

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 15:02:25 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/16 19:09:24 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/20 21:07:58 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include "libft/libft.h"
 # include "minilibx/mlx.h"
 
-# define WIDTH 1800
-# define HEIGHT 1360
+# define WIDTH 1024
+# define HEIGHT 840
 
 # define KEY_ESC 53
 # define KEY_UP 126
@@ -72,22 +72,15 @@ typedef struct	s_vector{
 } 							t_vector;
 
 typedef struct 	s_camera {
-  t_vector 				pos;
-  t_vector 				dir;
+  t_vector 			pos;
+  t_vector 			dir;
   float  				pov;
 } 							t_camera;
 
-typedef struct s_ray{
-        t_vector start;
-        t_vector dir;
-}							 t_ray;
-
-/* Colour definition */
-typedef struct	s_color{
-        float 	r;
-				float 	g;
-				float		b;
-}								t_color;
+typedef struct 	s_ray{
+        				t_vector start;
+        				t_vector dir;
+}							 	t_ray;
 
 typedef enum e_objtype
 {
@@ -100,24 +93,25 @@ typedef enum e_objtype
 /* Sphere Primitive definition */
 typedef struct 			s_object
 {
-        t_vector 			*pos;
-        t_vector 			*dir;
-        n_type		type;
-        float  			radius;
-        float  			albedo;
-				t_color 		*color;
-		    float  			reflection;
-		    float  			ambient;
-				struct s_object		*next;
+	t_vector 					pos;
+	t_vector 					dir;
+	t_vector 					color;
+
+	n_type						type;
+	float  						radius;
+	float  						albedo;
+	float  						reflection;
+	float  						ambient;
+	struct s_object		*next;
 }              			t_object;
 
 /* Light definition */
 typedef struct 	s_light{
-        t_vector 	pos;
-        t_vector 	dir;
-        float		intensity;
-        t_vector 	color;
-				struct 	s_light	*next;
+      t_vector 	pos;
+      t_vector 	dir;
+      float			intensity;
+      t_vector 	color;
+			struct 		s_light	*next;
 }								t_light;
 
 typedef struct	s_env
@@ -150,31 +144,20 @@ void			key_left_right(t_env *e);
 void			render(t_env *e);
 void			raytrace(t_env *e);
 
-float vectorDot(t_vector *v1, t_vector *v2);
-t_vector vectorSub(t_vector *v1, t_vector *v2);
-t_vector vectorScale(float c, t_vector *v);
-t_vector vectorAdd(t_vector *v1, t_vector *v2);
-float vectorLength(t_vector *v);
-void vectorNormalize(t_vector *v);
-void vectorPrint(t_vector *v);
-
 void vectorRotate(t_vector *v, char type, double angle);
 
-bool intersectRaySphere(t_ray *r, t_object *s, float *t);
+t_vector vector_new(float x, float y, float z);
+t_vector vector_rand(int max, int neg);
+t_vector vector_add(t_vector v1, t_vector v2);
+t_vector vector_sub(t_vector v1, t_vector v2);
+t_vector vector_scale(t_vector v, float scale);
+float vector_dot(t_vector v1, t_vector v2);
 
-bool findIntersect(t_ray *r, float *t, t_object *objects, int *material, t_ray *newray);
-void findLightIntersect(float coef, t_vector *color, t_object *objects, t_light *lights, t_ray *ray);
+void vectorPrint(t_vector vector);
 
-t_vector *vector_new(float x, float y, float z);
-t_vector *vector_rand(int max, int neg);
-
-
-t_object *object_new(n_type type);
+t_object *object_new(n_type type, float x, float y, float z);
 t_object *object_add(t_object **lst, t_object *new);
+t_object *object_new_random(n_type type);
 int object_count(t_object *lst);
-
-bool intersectObject(t_object object, t_ray *primRay, float *t);
-
-t_color *new_color(int r, int g, int b);
 
 #endif

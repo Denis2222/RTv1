@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 13:52:36 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/16 09:57:26 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/20 20:35:29 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void	key_release(t_keyboard *key, int keycode)
 	if (keycode == KEY_RIGHT)
 		key->right = 0;
 
-
 		if (keycode == KEY_W)
 			key->rup = 0;
 		if (keycode == KEY_S)
@@ -95,31 +94,31 @@ void	key_release(t_keyboard *key, int keycode)
 void	key_up_down(t_env *e)
 {
 	if (e->key.up){
-			e->scene.camera.pos.x -= 1;
+			e->camera.pos.x -= 1;
 	}
 	if (e->key.down){
-			e->scene.camera.pos.x += 1;
+			e->camera.pos.x += 1;
 	}
 	if (e->key.rup){
-			e->scene.camera.pos.x -= 1;
+			e->camera.pos.x -= 1;
 	}
 	if (e->key.rdown){
-			e->scene.camera.pos.x += 1;
+			e->camera.pos.x += 1;
 	}
 	if (e->key.rleft){
-			e->scene.camera.pos.y -= 1;
+			e->camera.pos.y -= 1;
 	}
 	if (e->key.rright){
-			e->scene.camera.pos.y += 1;
+			e->camera.pos.y += 1;
 	}
 }
 
 void	key_left_right(t_env *e)
 {
 	if (e->key.left){
-		e->scene.camera.pos.y += 1;
+		e->camera.pos.y += 1;
 	}
 	if (e->key.right){
-		e->scene.camera.pos.y -= 1;
+		e->camera.pos.y -= 1;
 	}
 }
