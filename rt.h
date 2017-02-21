@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 15:02:25 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/20 21:07:58 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/21 06:42:16 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include "libft/libft.h"
 # include "minilibx/mlx.h"
 
-# define WIDTH 1024
-# define HEIGHT 840
+# define WIDTH 2000
+# define HEIGHT 1200
 
 # define KEY_ESC 53
 # define KEY_UP 126
@@ -130,6 +130,11 @@ typedef struct	s_env
 	t_object      *objects;
 }								t_env;
 
+typedef struct	s_matrix
+{
+	float 				x[4][4];
+}								t_matrix;
+
 void			setup_mlx();
 int				key_press_hook(int keycode, t_env *e);
 int				key_release_hook(int keycode, t_env *e);
@@ -158,6 +163,10 @@ void vectorPrint(t_vector vector);
 t_object *object_new(n_type type, float x, float y, float z);
 t_object *object_add(t_object **lst, t_object *new);
 t_object *object_new_random(n_type type);
+t_object *object_new_plane(float x, float y, float z, float rx, float ry, float rz);
 int object_count(t_object *lst);
+
+void multVecMatrix(t_vector *src, t_vector *dst);
+void multDirMatrix(t_vector *src, t_vector *dst);
 
 #endif

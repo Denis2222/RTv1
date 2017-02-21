@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 13:52:36 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/20 20:35:29 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/21 04:12:58 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,16 +100,16 @@ void	key_up_down(t_env *e)
 			e->camera.pos.x += 1;
 	}
 	if (e->key.rup){
-			e->camera.pos.x -= 1;
+			e->camera.dir.x -= 1;
 	}
 	if (e->key.rdown){
-			e->camera.pos.x += 1;
+			e->camera.dir.x += 1;
 	}
 	if (e->key.rleft){
-			e->camera.pos.y -= 1;
+			e->camera.dir.y -= 1;
 	}
 	if (e->key.rright){
-			e->camera.pos.y += 1;
+			e->camera.dir.y += 1;
 	}
 }
 

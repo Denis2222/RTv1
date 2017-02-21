@@ -8,7 +8,8 @@ SRCS = draw.c \
 		 intersect.c \
 		 object.c \
 		 color.c \
-	   main.c
+	   main.c \
+		 matrix.c
 
 NAME = rtv1
 GCC_FLAG = -Wall -Werror -Wextra -g

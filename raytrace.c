@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/13 19:23:21 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/21 04:07:25 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/21 06:40:53 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,26 @@ void vectorNormalize(t_vector *v)
 t_ray   generatePrimRay(int x, int y, t_env *e)
 {
   t_ray primRay;
+  t_vector rayOrigin;
+  t_vector rayOriginWorld;
+  t_vector rayPWorld;
+  //t_vector rayDirection;
+  t_vector rayDir;
 
   float imageAspectRatio = WIDTH / (float)HEIGHT; // assuming width > height
   float Px = (2 * ((x + 0.5) / WIDTH) - 1) * tan(e->camera.pov / 2 * M_PI / 180) * imageAspectRatio;
   float Py = (1 - 2 * ((y + 0.5) / HEIGHT) * tan(e->camera.pov / 2 * M_PI / 180));
 
-  primRay.start = vector_new(0, e->camera.pos.y*10, e->camera.pos.x*10);
-  primRay.dir = vector_new(Px, Py, -1);
+  rayOrigin = vector_new(e->camera.dir.x*2, e->camera.pos.y*2, e->camera.pos.x*2); //
+  rayDir = vector_new(Px, Py, -1);
+  multVecMatrix(&rayOrigin, &rayOriginWorld);
+  multDirMatrix(&rayDir, &rayPWorld);
 
-  vectorNormalize(&primRay.dir);
+  //rayDirection = vector_sub(rayPWorld, rayOriginWorld);
+  vectorNormalize(&rayPWorld);
+
+  primRay.start = rayOriginWorld;
+  primRay.dir = rayPWorld;
 
   return primRay;
 }
@@ -76,7 +87,7 @@ bool solveQuadratic(float a, float b, float c, float *x0, float *x1)
     return true;
 }
 
-bool intersect(t_ray *ray, t_object *object, float *dist)
+bool intersectSphere(t_ray *ray, t_object *object, float *dist)
 {
   float t0, t1;
 
@@ -102,6 +113,25 @@ bool intersect(t_ray *ray, t_object *object, float *dist)
   return (true);
 }
 
+
+bool intersectPlan(t_ray *ray, t_object *object, float *dist)
+{
+
+  float denom;
+  float t;
+  denom = vector_dot(object->dir, ray->dir);
+  //printf("%f\n", denom);
+  if (denom > 1e-6) {
+
+     t_vector length = vector_sub(object->pos, ray->start);
+     t = vector_dot(length, ray->dir) / denom;
+     if (t >= 0 && t < *dist)
+      *dist = t;
+     return (t >= 0);
+ }
+ return false;
+}
+
 bool trace(t_ray *ray, t_env *e, t_object **hitObject, float *min)
 {
   t_object *current;
@@ -109,17 +139,25 @@ bool trace(t_ray *ray, t_env *e, t_object **hitObject, float *min)
 
   cdist = *min;
   current = e->objects;
-  while (current)
-  {
-    if (intersect(ray, current, &cdist))
+  while (current){
+    switch ((int)current->type)
     {
-      if (cdist < *min)
-      {
-
-        *min = cdist;
-        *hitObject = current;
-        //printf("STORE hitObject {%p}", *hitObject);
-      }
+      case 0:
+        if (intersectSphere(ray, current, &cdist)){
+          if (cdist < *min){
+            *min = cdist;
+            *hitObject = current;
+          }
+        }
+      break;
+      case 1:
+        if (intersectPlan(ray, current, &cdist)){
+          if (cdist < *min){
+            *min = cdist;
+            *hitObject = current;
+          }
+        }
+      break;
     }
     current = current->next;
   }
@@ -142,16 +180,22 @@ t_vector getColor(t_ray *ray, t_env *e, t_object *hitObject, float dist)
   // VecRayStart + VecRayDir * DistToCollide
   hitPoint = vector_add(ray->start, vector_scale(ray->dir, dist));
 
-  // Normal = (VecHitPoint - VecObjectPos) / R
-  normal = vector_scale(vector_sub(hitPoint, hitObject->pos), (1 / hitObject->radius));
+  if (hitObject->type == PLAN)
+  {
+    normal = hitObject->dir;
+  } else {
+    // Normal = (VecHitPoint - VecObjectPos) / R
+    normal = vector_scale(vector_sub(hitPoint, hitObject->pos), (1 / hitObject->radius));
+  }
 
-  lightFromHit = vector_sub(hitPoint, vector_new(0,0,0));
-  //Factor
   vectorNormalize(&normal);
+  lightFromHit = vector_sub(hitPoint, vector_new(0,0,e->camera.dir.y*10));
   vectorNormalize(&lightFromHit);
 
-  factor = vector_dot(normal, lightFromHit);
-
+  //Factor
+  factor = vector_dot(lightFromHit, normal);
+  if (factor < 0)
+    factor = 0;
 
   color = vector_add(vector_scale(hitObject->color, factor * 0.9),vector_scale(hitObject->color, 0.1));
   return (color);
@@ -165,7 +209,8 @@ t_vector castRay(t_ray *ray, t_env *e)
 
   hitObject = NULL;
   color = vector_add(ray->dir, vector_new(1,1,100));
-  color = vector_scale(color, 100);
+  color = vector_scale(color, 50);
+  //color = vector_new(30,30,30);
   min = 20000;
   if (trace(ray, e, &hitObject, &min))
   {
