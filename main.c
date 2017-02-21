@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 15:03:39 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/20 23:39:23 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/21 02:57:35 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ void init(t_env *e)
 {
 	e->objects = NULL;
 	e->objects = object_add(&(e->objects), object_new(SPHERE, 0, 20, -30));
-	//e->objects = object_add(&(e->objects), object_new(SPHERE, 25, 50, -70));
-	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	e->objects = object_add(&(e->objects), object_new(SPHERE, 25, 50, -70));
+	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
@@ -78,8 +78,8 @@ int	main(void)
 	mlx_hook(e.win, 2, 1, key_press_hook, &e);
 	mlx_hook(e.win, 3, 1, key_release_hook, &e);
 	mlx_expose_hook(e.win, expose_hook, &e);
-	//mlx_loop_hook(e.mlx, &get_loop_hook, &e);
-	render(&e);
+	mlx_loop_hook(e.mlx, &get_loop_hook, &e);
+	//render(&e);
 	mlx_loop(e.mlx);
 	return (0);
 }
