@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/16 01:46:57 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/20 21:42:40 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/21 08:16:25 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,21 @@ void multDirMatrix(t_vector *src, t_vector *dst)
     dst.z = c;
 }
 */
+
+void	vectorNormalize(t_vector *v)
+{
+	float norm;
+	float factor;
+
+	norm = v->x * v->x + v->y * v->y + v->z * v->z;
+	if (norm > 0)
+	{
+		factor = 1 / sqrt(norm);
+		v->x *= factor;
+		v->y *= factor;
+		v->z *= factor;
+	}
+}
 
 t_vector vector_new(float x, float y, float z)
 {

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 15:03:39 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/21 06:44:12 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/21 08:20:12 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,28 @@ void init(t_env *e)
 	e->objects = object_add(&(e->objects), object_new(SPHERE, 0, 20, -30));
 	e->objects = object_add(&(e->objects), object_new(SPHERE, 25, 50, -70));
 
-
 	e->objects = object_add(&(e->objects), object_new_plane(0, 0, -100, 0, 0, -1));
-	//e->objects = object_add(&(e->objects), object_new_plane(0, -50, 0, 0, -1, 0));
-	//e->objects = object_add(&(e->objects), object_new_plane(100, 0, 0, 1, 0, 0));
+	e->objects = object_add(&(e->objects), object_new_plane(0, -1000, 0, 0, -1, 0));
+	//e->objects = object_add(&(e->objects), object_new_plane(100, 100, 100, 1, 1, 0));
+
+	e->objects = object_add(&(e->objects), object_new_disc(0, 0, -50, 0, 0, -1));
+
+
 	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 
 /*
 	e->lights[0].pos.x = 0;

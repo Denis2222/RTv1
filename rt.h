@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 15:02:25 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/21 06:42:16 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/21 08:16:23 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include "libft/libft.h"
 # include "minilibx/mlx.h"
 
-# define WIDTH 2000
-# define HEIGHT 1200
+# define WIDTH 1000
+# define HEIGHT 700
 
 # define KEY_ESC 53
 # define KEY_UP 126
@@ -86,6 +86,7 @@ typedef enum e_objtype
 {
 	SPHERE,
 	PLAN,
+	DISC,
 	CONE,
 	TRIANGLE
 }	n_type;
@@ -99,6 +100,7 @@ typedef struct 			s_object
 
 	n_type						type;
 	float  						radius;
+	float						radius2;
 	float  						albedo;
 	float  						reflection;
 	float  						ambient;
@@ -157,6 +159,7 @@ t_vector vector_add(t_vector v1, t_vector v2);
 t_vector vector_sub(t_vector v1, t_vector v2);
 t_vector vector_scale(t_vector v, float scale);
 float vector_dot(t_vector v1, t_vector v2);
+void	vectorNormalize(t_vector *v);
 
 void vectorPrint(t_vector vector);
 
@@ -164,6 +167,7 @@ t_object *object_new(n_type type, float x, float y, float z);
 t_object *object_add(t_object **lst, t_object *new);
 t_object *object_new_random(n_type type);
 t_object *object_new_plane(float x, float y, float z, float rx, float ry, float rz);
+t_object *object_new_disc(float x, float y, float z, float rx, float ry, float rz);
 int object_count(t_object *lst);
 
 void multVecMatrix(t_vector *src, t_vector *dst);

@@ -6,117 +6,94 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/13 19:23:21 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/21 06:40:53 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/21 08:16:12 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-float returnmax(float x, float y)
+float	returnmax(float x, float y)
 {
-  if (x > y)
-    return (x);
-  return (y);
+	if (x > y)
+		return (x);
+	return (y);
 }
 
-//void  spedraw();
 
-void vectorNormalize(t_vector *v)
+t_ray	generatePrimRay(int x, int y, t_env *e)
 {
-  float norm;
-  float factor;
+	t_ray		primRay;
+	t_vector	rayOrigin;
+	t_vector	rayOriginWorld;
+	t_vector	rayPWorld;
+	t_vector	rayDirection;
 
-  norm =  v->x * v->x + v->y * v->y + v->z * v->z;
-  if (norm > 0) {
-      factor = 1 / sqrt(norm);
-      v->x *= factor;
-      v->y *= factor;
-      v->z *= factor;
-  }
-}
+	float	imageAspectRatio = WIDTH / (float)HEIGHT;
+	float	Px = (2 * ((x + 0.5) / WIDTH) - 1) * tan(e->camera.pov / 2 * M_PI / 180) * imageAspectRatio;
+	float	Py = (1 - 2 * ((y + 0.5) / HEIGHT) * tan(e->camera.pov / 2 * M_PI / 180));
 
-t_ray   generatePrimRay(int x, int y, t_env *e)
-{
-  t_ray primRay;
-  t_vector rayOrigin;
-  t_vector rayOriginWorld;
-  t_vector rayPWorld;
-  //t_vector rayDirection;
-  t_vector rayDir;
-
-  float imageAspectRatio = WIDTH / (float)HEIGHT; // assuming width > height
-  float Px = (2 * ((x + 0.5) / WIDTH) - 1) * tan(e->camera.pov / 2 * M_PI / 180) * imageAspectRatio;
-  float Py = (1 - 2 * ((y + 0.5) / HEIGHT) * tan(e->camera.pov / 2 * M_PI / 180));
-
-  rayOrigin = vector_new(e->camera.dir.x*2, e->camera.pos.y*2, e->camera.pos.x*2); //
-  rayDir = vector_new(Px, Py, -1);
-  multVecMatrix(&rayOrigin, &rayOriginWorld);
-  multDirMatrix(&rayDir, &rayPWorld);
-
-  //rayDirection = vector_sub(rayPWorld, rayOriginWorld);
-  vectorNormalize(&rayPWorld);
-
-  primRay.start = rayOriginWorld;
-  primRay.dir = rayPWorld;
-
-  return primRay;
+	rayOrigin = vector_new(0, e->camera.pos.y * 2, e->camera.pos.x * 2);
+	rayDirection = vector_new(Px, Py, -1);
+	multVecMatrix(&rayOrigin, &rayOriginWorld);
+	multDirMatrix(&rayDirection, &rayPWorld);
+	vectorNormalize(&rayPWorld);
+	primRay.start = rayOriginWorld;
+	primRay.dir = rayPWorld;
+	return primRay;
 }
 
 bool solveQuadratic(float a, float b, float c, float *x0, float *x1)
 {
-    float discr = b * b - 4 * a * c;
-    if (discr < 0) return false;
-    else if (discr == 0) {
-      *x0 = - 0.5 * b / a;
-      *x1 = - 0.5 * b / a;
-    }
-    else {
-        float q = (b > 0) ?
-            -0.5 * (b + sqrt(discr)) :
-            -0.5 * (b - sqrt(discr));
-        *x0 = q / a;
-        *x1 = c / q;
-    }
-    if (*x0 > *x1) {
-      float tmp;
+	float	discr = b * b - 4 * a * c;
+	if (discr < 0)
+		return false;
+	else if (discr == 0)
+	{
+		*x0 = -0.5 * b / a;
+		*x1 = -0.5 * b / a;
+	}
+	else {
+	    float	q = (b > 0) ?
+	        -0.5 * (b + sqrt(discr)) :
+	        -0.5 * (b - sqrt(discr));
+	    *x0 = q / a;
+	    *x1 = c / q;
+	}
+	if (*x0 > *x1)
+	{
+		float tmp;
 
-      tmp = *x0;
-      *x0 = *x1;
-      *x1 = tmp;
-    }
-    return true;
+		tmp = *x0;
+		*x0 = *x1;
+		*x1 = tmp;
+	}
+	return (true);
 }
 
-bool intersectSphere(t_ray *ray, t_object *object, float *dist)
+bool	intersectSphere(t_ray *ray, t_object *object, float *dist)
 {
-  float t0, t1;
-
-  //printf("%f", *dist);
-  t_vector L = vector_sub(ray->start, object->pos);
-  float a = vector_dot(ray->dir, ray->dir);
-  float b = 2 * vector_dot(ray->dir, L);
-  float c = vector_dot(L, L) - (object->radius * object->radius);
-  if (!solveQuadratic(a,b,c, &t0, &t1))
-    return false;
-
-    //printf(" %f %f %f", t0,t1, *dist);
-
-  if (t0 < 0)
-  {
-    t0 = t1;
-    if (t0 < 0)
-      return (false);
-  }
-  if (t0 < *dist)
-    *dist = t0;
-    //printf(" %f %f %f\n", t0,t1, *dist);
-  return (true);
+	float t0;
+	float t1;
+	t_vector	L = vector_sub(ray->start, object->pos);
+	float		a = vector_dot(ray->dir, ray->dir);
+	float		b = 2 * vector_dot(ray->dir, L);
+	float		c = vector_dot(L, L) - (object->radius * object->radius);
+	if (!solveQuadratic(a, b, c, &t0, &t1))
+		return (false);
+	if (t0 < 0)
+	{
+		t0 = t1;
+		if (t0 < 0)
+			return (false);
+	}
+	if (t0 < *dist)
+		*dist = t0;
+	return (true);
 }
 
 
 bool intersectPlan(t_ray *ray, t_object *object, float *dist)
 {
-
   float denom;
   float t;
   denom = vector_dot(object->dir, ray->dir);
@@ -130,6 +107,28 @@ bool intersectPlan(t_ray *ray, t_object *object, float *dist)
      return (t >= 0);
  }
  return false;
+}
+
+bool intersectDisc(t_ray *ray, t_object *object, float *dist)
+{
+	float 		t;
+	t_vector 	p;
+	t_vector 	v;
+	float 		d2;
+
+	t = *dist;
+	if (intersectPlan(ray, object, &t) && t < *dist)
+	{
+		p = vector_add(vector_scale(ray->dir, t), ray->start);
+		v = vector_sub(p, object->pos);
+		d2 = vector_dot(v, v);
+		if (d2 <= object->radius2)
+		{
+			*dist = t;
+			return (1);
+		}
+	}
+	return false;
 }
 
 bool trace(t_ray *ray, t_env *e, t_object **hitObject, float *min)
@@ -152,6 +151,14 @@ bool trace(t_ray *ray, t_env *e, t_object **hitObject, float *min)
       break;
       case 1:
         if (intersectPlan(ray, current, &cdist)){
+          if (cdist < *min){
+            *min = cdist;
+            *hitObject = current;
+          }
+        }
+      break;
+	  case 2:
+        if (intersectDisc(ray, current, &cdist)){
           if (cdist < *min){
             *min = cdist;
             *hitObject = current;
@@ -234,13 +241,11 @@ void	raytrace(t_env *e)
       t_ray primRay;
       primRay = generatePrimRay(x, y, e);
       hitColor = castRay(&primRay, e);
-
       for (int xx = 0; xx < e->key.res; xx++){
         for (int yy = 0; yy < e->key.res; yy++){
           draw_dot(e, x+xx, y+yy, rgb2i(hitColor.x, hitColor.y, hitColor.z));
         }
       }
-      //fflush(stdout);
       y+=e->key.res;
     }
     x+=e->key.res;

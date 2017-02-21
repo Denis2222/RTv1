@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/16 17:35:31 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/21 04:59:53 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/02/21 08:17:29 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_object *object_new(n_type type, float x, float y, float z) {
   new->dir = vector_new(0,0,1);
   new->type = type;
   new->radius = 0.5;
+  new->radius2 = new->radius * new->radius;
   new->albedo = 0.18;
   new->color = vector_new(255, 0, 0);
   new->reflection = 0;
@@ -53,10 +54,38 @@ t_object *object_new_plane(float x, float y, float z, float rx, float ry, float 
 
   new->pos = vector_new(x, y, z);
   new->dir = vector_new(rx,ry,rz);
+
+  vectorNormalize(&new->dir);
+
   new->type = type;
   new->radius = 0;
   new->albedo = 0.18;
   new->color = vector_new(0, 0, 200);
+  new->reflection = 0;
+  new->ambient = 0;
+  new->next = NULL;
+  return (new);
+}
+
+t_object *object_new_disc(float x, float y, float z, float rx, float ry, float rz) {
+  t_object *new;
+  n_type type;
+
+  type = DISC;
+  new = (t_object*)malloc(sizeof(t_object));
+  if (!new)
+    return (NULL);
+
+  new->pos = vector_new(x, y, z);
+  new->dir = vector_new(rx,ry,rz);
+
+
+  vectorNormalize(&new->dir);
+  new->type = type;
+  new->radius = 10;
+  new->radius2 = new->radius * new->radius;
+  new->albedo = 0.18;
+  new->color = vector_new(0, 200, 0);
   new->reflection = 0;
   new->ambient = 0;
   new->next = NULL;
