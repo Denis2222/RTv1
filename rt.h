@@ -154,31 +154,31 @@ void			key_bind(t_env *e);
 void			render(t_env *e);
 void			raytrace(t_env *e);
 
-void vectorRotate(t_vector *v, char type, double angle);
+void 			vectorRotate(t_vector *v, char type, double angle);
 
-t_vector vector_new(float x, float y, float z);
-t_vector vector_rand(int max, int neg);
-t_vector vector_add(t_vector v1, t_vector v2);
-t_vector vector_sub(t_vector v1, t_vector v2);
-t_vector vector_scale(t_vector v, float scale);
-float vector_dot(t_vector v1, t_vector v2);
-void	vectorNormalize(t_vector *v);
+t_vector 	vector_new(float x, float y, float z);
+t_vector 	vector_rand(int max, int neg);
+t_vector 	vector_add(t_vector v1, t_vector v2);
+t_vector 	vector_sub(t_vector v1, t_vector v2);
+t_vector 	vector_scale(t_vector v, float scale);
+float 		vector_dot(t_vector v1, t_vector v2);
+void			vectorNormalize(t_vector *v);
 
-void vectorPrint(t_vector vector);
+void 			vectorPrint(t_vector vector);
 
-t_object *object_new(n_type type, float x, float y, float z);
-t_object *object_add(t_object **lst, t_object *new);
-t_object *object_new_random(n_type type);
-t_object *object_new_plane(float x, float y, float z, float rx, float ry, float rz);
-t_object *object_new_disc(float x, float y, float z, float rx, float ry, float rz);
-int object_count(t_object *lst);
+t_object 	*object_new(n_type type, float x, float y, float z);
+t_object 	*object_add(t_object **lst, t_object *new);
+t_object 	*object_new_random(n_type type);
+t_object 	*object_new_plane(float x, float y, float z, float rx, float ry, float rz);
+t_object 	*object_new_disc(float x, float y, float z, float rx, float ry, float rz);
+int 			object_count(t_object *lst);
 
-t_light *light_new(float x, float y, float z);
-t_light *light_add(t_light **lst, t_light *new);
-int light_count(t_light *lst);
+t_light 	*light_new(float x, float y, float z);
+t_light 	*light_add(t_light **lst, t_light *new);
+int 			light_count(t_light *lst);
 
 
-void multVecMatrix(t_vector *src, t_vector *dst);
-void multDirMatrix(t_vector *src, t_vector *dst);
+void 			multVecMatrix(t_vector *src, t_vector *dst);
+void 			multDirMatrix(t_vector *src, t_vector *dst);
 
 #endif
