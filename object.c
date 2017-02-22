@@ -84,7 +84,7 @@ t_object *object_new_disc(float x, float y, float z, float rx, float ry, float r
 
   vectorNormalize(&new->dir);
   new->type = type;
-  new->radius = 10;
+  new->radius = 100;
   new->radius2 = new->radius * new->radius;
   new->albedo = 0.18;
   new->color = vector_new(0, 200, 0);

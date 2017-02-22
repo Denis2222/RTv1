@@ -181,30 +181,37 @@ t_vector getColor(t_ray *ray, t_env *e, t_object *hitObject, float dist)
   t_vector hitPoint;
   t_vector normal;
   t_vector lightFromHit;
+	t_light	 *current;
 
   (void)e;
   float  factor;
   // VecRayStart + VecRayDir * DistToCollide
   hitPoint = vector_add(ray->start, vector_scale(ray->dir, dist));
 
-  if (hitObject->type == PLAN)
+  if (hitObject->type == PLAN || hitObject->type == DISC)
   {
     normal = hitObject->dir;
   } else {
     // Normal = (VecHitPoint - VecObjectPos) / R
     normal = vector_scale(vector_sub(hitPoint, hitObject->pos), (1 / hitObject->radius));
   }
-
   vectorNormalize(&normal);
-  lightFromHit = vector_sub(hitPoint, vector_new(0,0,e->camera.dir.y*10));
-  vectorNormalize(&lightFromHit);
+	color = vector_new(0,0,0);
+	current = e->lights;
+	while (current){
+	  lightFromHit = vector_sub(hitPoint, current->pos);
+	  vectorNormalize(&lightFromHit);
 
-  //Factor
-  factor = vector_dot(lightFromHit, normal);
-  if (factor < 0)
-    factor = 0;
+	  //Factor
+	  factor = vector_dot(lightFromHit, normal);
+	  if (factor < 0)
+	    factor = 0;
 
-  color = vector_add(vector_scale(hitObject->color, factor * 0.9),vector_scale(hitObject->color, 0.1));
+		color = vector_add(color,
+			vector_add(vector_scale(hitObject->color, factor * 0.9),vector_scale(hitObject->color, 0.1))
+		);
+		current = current->next;
+	}
   return (color);
 }
 

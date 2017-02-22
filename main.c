@@ -19,40 +19,26 @@ void init(t_env *e)
 	e->objects = object_add(&(e->objects), object_new(SPHERE, 25, 50, -70));
 
 	e->objects = object_add(&(e->objects), object_new_plane(0, 0, -100, 0, 0, -1));
+	//e->objects = object_add(&(e->objects), object_new_plane(0, -200, 0, 0, -1, 0));
 	//e->objects = object_add(&(e->objects), object_new_plane(0, -1000, 0, 0, -1, 0));
 	//e->objects = object_add(&(e->objects), object_new_plane(100, 100, 100, 1, 1, 0));
 
-	//e->objects = object_add(&(e->objects), object_new_disc(0, 0, -50, 0, 0, -1));
+	//e->objects = object_add(&(e->objects), object_new_disc(0, 0, -100, 0, 0, -1));
 
-
 	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 
-/*
-	e->lights[0].pos.x = 0;
-	e->lights[0].pos.y = 0;
-	e->lights[0].pos.z = 20;
-	e->lights[0].dir.x = 0;
-	e->lights[0].dir.y = 0;
-	e->lights[0].dir.z = -1;
-	e->lights[0].intensity = 10;
-	e->lights[0].color.x = 200;
-	e->lights[0].color.y = 0;
-	e->lights[0].color.z = 0;
-*/
+	e->lights = light_add(&(e->lights), light_new(0,0,-100));
+	//e->lights = light_add(&(e->lights), light_new(0,100,0));
+
+
+	e->selectedObject = e->objects;
+	e->selectedLight = e->lights;
+
 	e->resolution = 3;
 	e->camera.pov = 90;
 	e->camera.pos.x = 0;

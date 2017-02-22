@@ -19,8 +19,8 @@
 # include "libft/libft.h"
 # include "minilibx/mlx.h"
 
-# define WIDTH 1000
-# define HEIGHT 700
+# define WIDTH 1100
+# define HEIGHT 800
 
 # define KEY_ESC 53
 # define KEY_UP 126
@@ -36,6 +36,8 @@
 # define KEY_A 0
 # define KEY_S 1
 # define KEY_D 2
+# define KEY_Q 12
+# define KEY_E 14
 
 # define KEY_U 32
 # define KEY_I 34
@@ -43,6 +45,13 @@
 # define KEY_J 38
 # define KEY_K 40
 # define KEY_L 37
+
+# define KEY_R 15
+# define KEY_T 17
+# define KEY_Y 16
+# define KEY_F 3
+# define KEY_G 5
+# define KEY_H 4
 
 # define KEY_PLUS 69
 # define KEY_MINUS 78
@@ -87,6 +96,8 @@ typedef struct 			s_object
 {
 	t_vector 					pos;
 	t_vector 					dir;
+
+
 	t_vector 					color;
 
 	n_type						type;
@@ -104,6 +115,7 @@ typedef struct 	s_light{
       t_vector 	dir;
       float			intensity;
       t_vector 	color;
+			int				type;
 			struct 		s_light	*next;
 }								t_light;
 
@@ -121,7 +133,9 @@ typedef struct	s_env
 
 	t_camera      camera;
 	t_light       *lights;
+	t_light				*selectedLight;
 	t_object      *objects;
+	t_object			*selectedObject;
 }								t_env;
 
 typedef struct	s_matrix
@@ -158,6 +172,11 @@ t_object *object_new_random(n_type type);
 t_object *object_new_plane(float x, float y, float z, float rx, float ry, float rz);
 t_object *object_new_disc(float x, float y, float z, float rx, float ry, float rz);
 int object_count(t_object *lst);
+
+t_light *light_new(float x, float y, float z);
+t_light *light_add(t_light **lst, t_light *new);
+int light_count(t_light *lst);
+
 
 void multVecMatrix(t_vector *src, t_vector *dst);
 void multDirMatrix(t_vector *src, t_vector *dst);
