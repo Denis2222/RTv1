@@ -136,6 +136,7 @@ typedef struct	s_env
 	t_light				*selectedLight;
 	t_object      *objects;
 	t_object			*selectedObject;
+	t_vector			bgcolor;
 }								t_env;
 
 typedef struct	s_matrix
@@ -163,6 +164,7 @@ t_vector 	vector_sub(t_vector v1, t_vector v2);
 t_vector 	vector_scale(t_vector v, float scale);
 float 		vector_dot(t_vector v1, t_vector v2);
 void			vectorNormalize(t_vector *v);
+t_vector reflect(t_vector I,t_vector N);
 
 void 			vectorPrint(t_vector vector);
 
@@ -177,8 +179,12 @@ t_light 	*light_new(float x, float y, float z);
 t_light 	*light_add(t_light **lst, t_light *new);
 int 			light_count(t_light *lst);
 
+t_ray ray_new(t_vector start, t_vector dir);
 
 void 			multVecMatrix(t_vector *src, t_vector *dst);
 void 			multDirMatrix(t_vector *src, t_vector *dst);
+
+
+t_vector castRay(t_ray *ray, t_env *e, int depth);
 
 #endif

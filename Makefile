@@ -10,6 +10,7 @@ SRCS = draw.c \
 		 color.c \
 	   main.c \
 	   light.c \
+		 ray.c \
 		 matrix.c
 
 NAME = rtv1

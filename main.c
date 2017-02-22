@@ -14,11 +14,29 @@
 
 void init(t_env *e)
 {
+
+	t_object *specialObject;
+
+
+
 	e->objects = NULL;
-	e->objects = object_add(&(e->objects), object_new(SPHERE, 0, 20, -30));
-	e->objects = object_add(&(e->objects), object_new(SPHERE, 25, 50, -70));
 
 	e->objects = object_add(&(e->objects), object_new_plane(0, 0, -100, 0, 0, -1));
+	e->objects = object_add(&(e->objects), object_new(SPHERE, -2, 0, -2));
+	specialObject = object_new(SPHERE, -1, 0, -4);
+	specialObject->reflection = 0.4;
+	specialObject->color = vector_new(0, 0,180);
+
+	e->objects = object_add(&(e->objects), specialObject);
+
+	specialObject = object_new(SPHERE, 1, -2, -2);
+	specialObject->reflection = 0.4;
+	specialObject->color = vector_new(35, 120,86);
+	e->objects = object_add(&(e->objects), specialObject);
+
+	e->objects->reflection = 0.4;
+
+	//
 	//e->objects = object_add(&(e->objects), object_new_plane(0, -200, 0, 0, -1, 0));
 	//e->objects = object_add(&(e->objects), object_new_plane(0, -1000, 0, 0, -1, 0));
 	//e->objects = object_add(&(e->objects), object_new_plane(100, 100, 100, 1, 1, 0));
@@ -33,8 +51,9 @@ void init(t_env *e)
 	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 
 	e->lights = light_add(&(e->lights), light_new(0,0,-100));
-	//e->lights = light_add(&(e->lights), light_new(0,100,0));
+	e->lights = light_add(&(e->lights), light_new(0,100,0));
 
+	e->bgcolor = vector_new(231,150,134);
 
 	e->selectedObject = e->objects;
 	e->selectedLight = e->lights;

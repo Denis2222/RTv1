@@ -29,6 +29,8 @@ int		key_release_hook(int keycode, t_env *e)
 {
 	//(void)e;
 	//key_release(e, keycode);
+
+	printf(" {%f %f %f} \n ", e->selectedObject->pos.x, e->selectedObject->pos.y, e->selectedObject->pos.z);
 	e->key[keycode] = 0;
 	(void)keycode;
 	return (0);

@@ -43,6 +43,20 @@ void multDirMatrix(t_vector *src, t_vector *dst)
 }
 */
 
+t_vector reflect(t_vector I,t_vector N)
+{
+		t_vector new;
+		float factor;
+
+		new = I;
+		factor = vector_dot(I, N);
+		new = vector_sub(new, vector_scale(N, factor * 2));
+
+		vectorNormalize(&new);
+		return (new);
+    //return I - 2 * dotProduct(I, N) * N;
+}
+
 void	vectorNormalize(t_vector *v)
 {
 	float norm;

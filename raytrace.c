@@ -174,7 +174,7 @@ bool trace(t_ray *ray, t_env *e, t_object **hitObject, float *min)
   return (0);
 }
 
-t_vector getColor(t_ray *ray, t_env *e, t_object *hitObject, float dist)
+t_vector getColor(t_ray *ray, t_env *e, t_object *hitObject, float dist, int depth)
 {
   t_vector color;
   //Diffuse Shading
@@ -182,8 +182,9 @@ t_vector getColor(t_ray *ray, t_env *e, t_object *hitObject, float dist)
   t_vector normal;
   t_vector lightFromHit;
 	t_light	 *current;
+	t_vector reflectedColor;
+	t_ray			reflectedRay;
 
-  (void)e;
   float  factor;
   // VecRayStart + VecRayDir * DistToCollide
   hitPoint = vector_add(ray->start, vector_scale(ray->dir, dist));
@@ -212,23 +213,35 @@ t_vector getColor(t_ray *ray, t_env *e, t_object *hitObject, float dist)
 		);
 		current = current->next;
 	}
+
+	if (hitObject->reflection > 0 && depth < 3)
+	{
+		//ft_printf("%d", depth);
+		reflectedRay = ray_new(hitPoint, reflect(ray->dir,normal));
+		reflectedColor = castRay(&reflectedRay, e, depth + 1);
+
+		color = vector_add(color, vector_scale(reflectedColor, hitObject->reflection));
+	}
   return (color);
 }
 
-t_vector castRay(t_ray *ray, t_env *e)
+t_vector castRay(t_ray *ray, t_env *e, int depth)
 {
   t_object  *hitObject;
   float     min;
   t_vector  color;
 
   hitObject = NULL;
-  color = vector_add(ray->dir, vector_new(1,1,100));
-  color = vector_scale(color, 50);
+	if (depth == 0)
+  	color = e->bgcolor;
+	else
+		color = vector_new(0,0,0);
+
   //color = vector_new(30,30,30);
   min = 20000;
   if (trace(ray, e, &hitObject, &min))
   {
-    color = getColor(ray, e, hitObject, min);
+    color = getColor(ray, e, hitObject, min, depth);
     //printf(" %p %f\n", hitObject, min);
     //color = hitObject->color;
   }
@@ -248,10 +261,16 @@ void	raytrace(t_env *e)
     while (y < HEIGHT) {
       t_ray primRay;
       primRay = generatePrimRay(x, y, e);
-      hitColor = castRay(&primRay, e);
+      hitColor = castRay(&primRay, e, 0);
       for (int xx = 0; xx < e->resolution; xx++){
         for (int yy = 0; yy < e->resolution; yy++){
 					if (x+xx < WIDTH && y+yy < HEIGHT)
+						if (hitColor.x > 255)
+							hitColor.x = 255;
+						if (hitColor.y > 255)
+							hitColor.y = 255;
+						if (hitColor.z > 255)
+							hitColor.z = 255;
           	draw_dot(e, x+xx, y+yy, rgb2i(hitColor.x, hitColor.y, hitColor.z));
         }
       }

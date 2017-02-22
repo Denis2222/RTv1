@@ -122,7 +122,7 @@ void	key_bind(t_env *e)
 			e->resolution += 1;
 	}
 	if (e->resolution < 1)
-		e->resolution = 2;
+		e->resolution = 1;
 
 (void)e;
 }
