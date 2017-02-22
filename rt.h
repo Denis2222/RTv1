@@ -29,13 +29,20 @@
 # define KEY_RIGHT 124
 # define KEY_SPACEBAR 49
 
-# define KEY_K 40
-# define KEY_L 37
+# define KEY_RSHIFT 258
+# define KEY_LSHIFT 257
 
 # define KEY_W 13
 # define KEY_A 0
 # define KEY_S 1
 # define KEY_D 2
+
+# define KEY_U 32
+# define KEY_I 34
+# define KEY_O 31
+# define KEY_J 38
+# define KEY_K 40
+# define KEY_L 37
 
 # define KEY_PLUS 69
 # define KEY_MINUS 78
@@ -47,22 +54,6 @@
 # define SR sin(ROTSPEED)
 # define C_R cos(-ROTSPEED)
 # define S_R sin(-ROTSPEED)
-
-typedef struct	s_keyboard
-{
-	int						up;
-	int						down;
-	int						left;
-	int						right;
-	int						sleft;
-	int						sright;
-	int						res;
-
-	int						rup;
-	int						rdown;
-	int						rleft;
-	int						rright;
-}								t_keyboard;
 
 /* The vector structure */
 typedef struct	s_vector{
@@ -125,7 +116,8 @@ typedef struct	s_env
 	int						bpp;
 	int						size_line;
 	int						endian;
-	t_keyboard		key;
+	int						resolution;
+	int						*key;
 
 	t_camera      camera;
 	t_light       *lights;
@@ -144,10 +136,7 @@ int				expose_hook(t_env *e);
 void			draw_dot(t_env *e, int x, int y, int color);
 int				rgb2i(int r, int g, int b);
 void			initkeyboard(t_env *e);
-void			key_press(t_keyboard *key, int keycode);
-void			key_release(t_keyboard *key, int keycode);
-void			key_up_down(t_env *e);
-void			key_left_right(t_env *e);
+void			key_bind(t_env *e);
 void			render(t_env *e);
 void			raytrace(t_env *e);
 

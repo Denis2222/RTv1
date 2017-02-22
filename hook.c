@@ -15,7 +15,10 @@
 int		key_press_hook(int keycode, t_env *e)
 {
 	ft_printf("[%d]", keycode);
-	key_press(&e->key, keycode);
+	//key_press(e, keycode);
+	e->key[keycode] = 1;
+	//(void)keycode;
+	//(void)e;
 	if (keycode == KEY_ESC)
 		exit(EXIT_SUCCESS);
 
@@ -24,7 +27,10 @@ int		key_press_hook(int keycode, t_env *e)
 
 int		key_release_hook(int keycode, t_env *e)
 {
-	key_release(&e->key, keycode);
+	//(void)e;
+	//key_release(e, keycode);
+	e->key[keycode] = 0;
+	(void)keycode;
 	return (0);
 }
 

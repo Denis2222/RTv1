@@ -32,7 +32,7 @@ t_ray	generatePrimRay(int x, int y, t_env *e)
 	float	Px = (2 * ((x + 0.5) / WIDTH) - 1) * tan(e->camera.pov / 2 * M_PI / 180) * imageAspectRatio;
 	float	Py = (1 - 2 * ((y + 0.5) / HEIGHT) * tan(e->camera.pov / 2 * M_PI / 180));
 
-	rayOrigin = vector_new(0, e->camera.pos.y * 2, e->camera.pos.x * 2);
+	rayOrigin = vector_new(e->camera.pos.x  * 2, e->camera.pos.y * 2, e->camera.pos.z * 2);
 	rayDirection = vector_new(Px, Py, -1);
 	multVecMatrix(&rayOrigin, &rayOriginWorld);
 	multDirMatrix(&rayDirection, &rayPWorld);
@@ -98,7 +98,7 @@ bool intersectPlan(t_ray *ray, t_object *object, float *dist)
   float t;
   denom = vector_dot(object->dir, ray->dir);
   //printf("%f\n", denom);
-  if (denom > 1e-6) {
+  if (denom > 0.01) {
 
      t_vector length = vector_sub(object->pos, ray->start);
      t = vector_dot(length, ray->dir) / denom;
@@ -234,6 +234,7 @@ void	raytrace(t_env *e)
   int	y;
   t_vector  hitColor;
 
+	//ft_printf("%d", e->key[KEY_I]);
   x = 0;
   while (x < WIDTH) {
     y = 0;
@@ -241,13 +242,14 @@ void	raytrace(t_env *e)
       t_ray primRay;
       primRay = generatePrimRay(x, y, e);
       hitColor = castRay(&primRay, e);
-      for (int xx = 0; xx < e->key.res; xx++){
-        for (int yy = 0; yy < e->key.res; yy++){
-          draw_dot(e, x+xx, y+yy, rgb2i(hitColor.x, hitColor.y, hitColor.z));
+      for (int xx = 0; xx < e->resolution; xx++){
+        for (int yy = 0; yy < e->resolution; yy++){
+					if (x+xx < WIDTH && y+yy < HEIGHT)
+          	draw_dot(e, x+xx, y+yy, rgb2i(hitColor.x, hitColor.y, hitColor.z));
         }
       }
-      y+=e->key.res;
+      y+=e->resolution;
     }
-    x+=e->key.res;
+    x+=e->resolution;
   }
 }

@@ -35,7 +35,11 @@ void	draw_dot(t_env *e, int x, int y, int color)
 	g = (color / 256) % 256;
 	r = (color / 256 / 256) % 256;
 	i = (e->size_line * y) + (x * (e->bpp / 8));
-	e->imgpx[i] = b;
-	e->imgpx[i + 1] = g;
-	e->imgpx[i + 2] = r;
+
+	if (i < (WIDTH * HEIGHT * e->bpp / 8))
+	{
+		e->imgpx[i] = b;
+		e->imgpx[i + 1] = g;
+		e->imgpx[i + 2] = r;
+	}
 }

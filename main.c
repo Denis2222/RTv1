@@ -19,17 +19,17 @@ void init(t_env *e)
 	e->objects = object_add(&(e->objects), object_new(SPHERE, 25, 50, -70));
 
 	e->objects = object_add(&(e->objects), object_new_plane(0, 0, -100, 0, 0, -1));
-	e->objects = object_add(&(e->objects), object_new_plane(0, -1000, 0, 0, -1, 0));
+	//e->objects = object_add(&(e->objects), object_new_plane(0, -1000, 0, 0, -1, 0));
 	//e->objects = object_add(&(e->objects), object_new_plane(100, 100, 100, 1, 1, 0));
 
-	e->objects = object_add(&(e->objects), object_new_disc(0, 0, -50, 0, 0, -1));
+	//e->objects = object_add(&(e->objects), object_new_disc(0, 0, -50, 0, 0, -1));
 
 
 	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
@@ -53,7 +53,7 @@ void init(t_env *e)
 	e->lights[0].color.y = 0;
 	e->lights[0].color.z = 0;
 */
-
+	e->resolution = 3;
 	e->camera.pov = 90;
 	e->camera.pos.x = 0;
 	e->camera.pos.y = 0;
@@ -83,9 +83,11 @@ int	main(void)
 	e.size_line = 0;
 	e.endian = 0;
 	init(&e);
+
 	mlx_hook(e.win, 2, 1, key_press_hook, &e);
 	mlx_hook(e.win, 3, 1, key_release_hook, &e);
 	mlx_expose_hook(e.win, expose_hook, &e);
+
 	mlx_loop_hook(e.mlx, &get_loop_hook, &e);
 	//render(&e);
 	mlx_loop(e.mlx);
@@ -94,8 +96,7 @@ int	main(void)
 
 void	render(t_env *e)
 {
-	key_up_down(e);
-	key_left_right(e);
+	key_bind(e);
 	e->img = mlx_new_image(e->mlx, WIDTH, HEIGHT);
 	e->imgpx = mlx_get_data_addr(e->img,
 	&(e->bpp), &(e->size_line), &(e->endian));

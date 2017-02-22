@@ -32,6 +32,8 @@ t_object *object_new(n_type type, float x, float y, float z) {
 
   new->pos = vector_new(x, y, z);
   new->dir = vector_new(0,0,1);
+
+  vectorNormalize(&new->dir);
   new->type = type;
   new->radius = 0.5;
   new->radius2 = new->radius * new->radius;
