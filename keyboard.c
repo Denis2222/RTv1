@@ -71,27 +71,27 @@ void	key_bind(t_env *e)
 	}
 
 	if (e->key[KEY_F]){
-			e->selectedObject->pos.x += 2;
+			e->selectedObject->pos.x += 1;
 	}
 
 	if (e->key[KEY_H]){
-			e->selectedObject->pos.x -= 2;
+			e->selectedObject->pos.x -= 1;
 	}
 
 	if (e->key[KEY_T]){
-			e->selectedObject->pos.y += 2;
+			e->selectedObject->pos.y += 1;
 	}
 
 	if (e->key[KEY_G]){
-			e->selectedObject->pos.y -= 2;
+			e->selectedObject->pos.y -= 1;
 	}
 
 	if (e->key[KEY_R]){
-			e->selectedObject->pos.z += 2;
+			e->selectedObject->pos.z += 1;
 	}
 
 	if (e->key[KEY_Y]){
-			e->selectedObject->pos.z -= 2;
+			e->selectedObject->pos.z -= 1;
 	}
 
 

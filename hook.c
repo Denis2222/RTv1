@@ -19,6 +19,9 @@ int		key_press_hook(int keycode, t_env *e)
 	e->key[keycode] = 1;
 	//(void)keycode;
 	//(void)e;
+	e->resolution = 5;
+	e->keyhook+=2;
+
 	if (keycode == KEY_ESC)
 		exit(EXIT_SUCCESS);
 
@@ -32,6 +35,7 @@ int		key_release_hook(int keycode, t_env *e)
 
 	printf(" {%f %f %f} \n ", e->selectedObject->pos.x, e->selectedObject->pos.y, e->selectedObject->pos.z);
 	e->key[keycode] = 0;
+	e->keyhook--;
 	(void)keycode;
 	return (0);
 }

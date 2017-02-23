@@ -130,6 +130,7 @@ typedef struct	s_env
 	int						endian;
 	int						resolution;
 	int						*key;
+  int           keyhook;
 
 	t_camera      camera;
 	t_light       *lights;

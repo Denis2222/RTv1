@@ -21,13 +21,14 @@ void init(t_env *e)
 
 	e->objects = NULL;
 
-	e->objects = object_add(&(e->objects), object_new_plane(0, 0, -100, 0, 0, -1));
+	e->objects = object_add(&(e->objects), object_new_plane(0, 0, -100, 0, 0, 1));
 	e->objects = object_add(&(e->objects), object_new(SPHERE, -2, 0, -2));
+/*
 	specialObject = object_new(SPHERE, -1, 0, -4);
 	specialObject->reflection = 0.4;
 	specialObject->color = vector_new(0, 0,180);
-
-	e->objects = object_add(&(e->objects), specialObject);
+*/
+	//e->objects = object_add(&(e->objects), specialObject);
 
 	specialObject = object_new(SPHERE, 1, -2, -2);
 	specialObject->reflection = 0.4;
@@ -36,22 +37,16 @@ void init(t_env *e)
 
 	e->objects->reflection = 0.4;
 
-	//
-	//e->objects = object_add(&(e->objects), object_new_plane(0, -200, 0, 0, -1, 0));
-	//e->objects = object_add(&(e->objects), object_new_plane(0, -1000, 0, 0, -1, 0));
-	//e->objects = object_add(&(e->objects), object_new_plane(100, 100, 100, 1, 1, 0));
-
-	//e->objects = object_add(&(e->objects), object_new_disc(0, 0, -100, 0, 0, -1));
-
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
-	e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
+	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 
-	e->lights = light_add(&(e->lights), light_new(0,0,-100));
-	e->lights = light_add(&(e->lights), light_new(0,100,0));
+	e->keyhook = 0;
+	e->lights = light_add(&(e->lights), light_new(0,0,100));
+	//e->lights = light_add(&(e->lights), light_new(0,100,0));
 
 	e->bgcolor = vector_new(231,150,134);
 
@@ -73,7 +68,19 @@ void init(t_env *e)
 
 int		get_loop_hook(t_env *e)
 {
-	render(e);
+	//printf("#%d %d\n", e->keyhook, e->resolution);
+	if (e->keyhook > 0)
+	{
+		e->keyhook--;
+		render(e);
+	}
+	else if (e->resolution > 1)
+	{
+		e->resolution--;
+		render(e);
+	} else {
+
+	}
 	return (0);
 }
 

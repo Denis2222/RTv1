@@ -184,6 +184,7 @@ t_vector getColor(t_ray *ray, t_env *e, t_object *hitObject, float dist, int dep
 	t_light	 *current;
 	t_vector reflectedColor;
 	t_ray			reflectedRay;
+	t_object	*useless;
 
   float  factor;
   // VecRayStart + VecRayDir * DistToCollide
@@ -194,27 +195,36 @@ t_vector getColor(t_ray *ray, t_env *e, t_object *hitObject, float dist, int dep
     normal = hitObject->dir;
   } else {
     // Normal = (VecHitPoint - VecObjectPos) / R
-    normal = vector_scale(vector_sub(hitPoint, hitObject->pos), (1 / hitObject->radius));
+		//normal = hitObject->dir;
+    normal = vector_sub(hitPoint, hitObject->pos);
   }
   vectorNormalize(&normal);
 	color = vector_new(0,0,0);
 	current = e->lights;
 	while (current){
-	  lightFromHit = vector_sub(hitPoint, current->pos);
-	  vectorNormalize(&lightFromHit);
 
-	  //Factor
-	  factor = vector_dot(lightFromHit, normal);
-	  if (factor < 0)
-	    factor = 0;
+		float le;
 
-		color = vector_add(color,
-			vector_add(vector_scale(hitObject->color, factor * 0.9),vector_scale(hitObject->color, 0.1))
-		);
+		le = dist;
+		lightFromHit = vector_sub(current->pos, hitPoint);
+		vectorNormalize(&lightFromHit);
+		reflectedRay = ray_new(hitPoint, lightFromHit);
+		useless = NULL;
+		//if (!trace(&reflectedRay, e, &useless, &le)){
+
+		  //Factor
+		  factor = vector_dot(lightFromHit, normal);
+		  if (factor < 0)
+		    factor = 0;
+
+			color = vector_add(color,
+				vector_add(vector_scale(hitObject->color, factor * 0.9),vector_scale(hitObject->color, 0.1))
+			);
+			//}
 		current = current->next;
 	}
 
-	if (hitObject->reflection > 0 && depth < 3)
+	if (hitObject->reflection > 0 && depth < 6)
 	{
 		//ft_printf("%d", depth);
 		reflectedRay = ray_new(hitPoint, reflect(ray->dir,normal));
