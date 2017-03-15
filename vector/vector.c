@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/16 01:46:57 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/21 08:16:25 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/03/15 01:35:08 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,27 @@ void vectorPrint(t_vector vector)
 t_vector vector_add(t_vector v1, t_vector v2)
 {
   return (vector_new(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z));
+}
+
+t_vector vector_add_color(t_vector v1, t_vector v2)
+{
+	t_vector vec;
+
+	if (v1.x + v2.x > 255)
+		vec.x = 255;
+	else
+		vec.x = v1.x+v2.x;
+
+	if (v1.y + v2.y > 255)
+		vec.y = 255;
+	else
+		vec.y = v1.y+v2.y;
+
+	if (v1.z + v2.z > 255)
+		vec.z = 255;
+	else
+		vec.z = v1.z+v2.z;
+  return vec;
 }
 
 t_vector vector_sub(t_vector v1, t_vector v2)

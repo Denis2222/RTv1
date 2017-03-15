@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 15:03:39 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/21 08:20:12 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/03/15 02:50:41 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,15 @@
 void init(t_env *e)
 {
 
-	t_object *specialObject;
+
+	parse_scene(e, "./scenetest.rt");
 
 
 
 	e->objects = NULL;
 
-	e->objects = object_add(&(e->objects), object_new_plane(0, 0, -100, 0, 0, 1));
-	e->objects = object_add(&(e->objects), object_new(SPHERE, -2, 0, -2));
+	//e->objects = object_add(&(e->objects), object_new_plane(0, 0, -100, 0, 0, 1));
+	e->objects = object_add(&(e->objects), object_new(SPHERE, 0, 1, 0));
 /*
 	specialObject = object_new(SPHERE, -1, 0, -4);
 	specialObject->reflection = 0.4;
@@ -30,12 +31,17 @@ void init(t_env *e)
 */
 	//e->objects = object_add(&(e->objects), specialObject);
 
-	specialObject = object_new(SPHERE, 1, -2, -2);
-	specialObject->reflection = 0.4;
-	specialObject->color = vector_new(35, 120,86);
+
+
+
+	t_object *specialObject;
+	specialObject = object_new(SPHERE, 1, 1, 0);
+	specialObject->reflection =1;
+	specialObject->color = vector_new(35, 200,86);
 	e->objects = object_add(&(e->objects), specialObject);
 
-	e->objects->reflection = 0.4;
+
+	//e->objects = object_add(&(e->objects), object_new(SPHERE, 1, -2, -2));
 
 	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 	//e->objects = object_add(&(e->objects), object_new_random(SPHERE));
@@ -48,16 +54,17 @@ void init(t_env *e)
 	e->lights = light_add(&(e->lights), light_new(0,0,100));
 	//e->lights = light_add(&(e->lights), light_new(0,100,0));
 
-	e->bgcolor = vector_new(231,150,134);
+	e->bgcolor = vector_new(0,0,0);
 
 	e->selectedObject = e->objects;
 	e->selectedLight = e->lights;
 
 	e->resolution = 3;
-	e->camera.pov = 90;
+	e->camera.pov = 80;
+
 	e->camera.pos.x = 0;
 	e->camera.pos.y = 0;
-	e->camera.pos.z = 0;
+	e->camera.pos.z = 1;
 
 	e->camera.dir.x = 0;
 	e->camera.dir.y = 0;

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/16 17:35:31 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/21 08:17:29 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/03/15 02:52:57 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ t_object *object_new(n_type type, float x, float y, float z) {
   new->radius = 0.5;
   new->radius2 = new->radius * new->radius;
   new->albedo = 0.18;
-  new->color = vector_new(255, 0, 0);
-  new->reflection = 0;
+  new->color = vector_new(200, 35,86);
+  new->reflection = 0.2;
   new->ambient = 0;
   new->next = NULL;
   return (new);

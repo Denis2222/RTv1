@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 15:02:25 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/21 08:16:23 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/03/15 01:35:17 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ typedef struct	s_matrix
 }								t_matrix;
 
 void			setup_mlx();
+void      parse_scene(t_env *e, char *filename);
 int				key_press_hook(int keycode, t_env *e);
 int				key_release_hook(int keycode, t_env *e);
 int				expose_hook(t_env *e);
@@ -161,6 +162,7 @@ void 			vectorRotate(t_vector *v, char type, double angle);
 t_vector 	vector_new(float x, float y, float z);
 t_vector 	vector_rand(int max, int neg);
 t_vector 	vector_add(t_vector v1, t_vector v2);
+t_vector vector_add_color(t_vector v1, t_vector v2);
 t_vector 	vector_sub(t_vector v1, t_vector v2);
 t_vector 	vector_scale(t_vector v, float scale);
 float 		vector_dot(t_vector v1, t_vector v2);

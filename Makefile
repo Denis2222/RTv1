@@ -11,10 +11,11 @@ SRCS = draw.c \
 	   main.c \
 	   light.c \
 		 ray.c \
+		 parser.c \
 		 matrix.c
 
 NAME = rtv1
-GCC_FLAG = -Wall -Werror -Wextra -g
+GCC_FLAG = #-Wall #-Werror #-Wextra -g
 CC = gcc $(GCC_FLAG)
 
 OBJS = $(SRCS:.c=.o)

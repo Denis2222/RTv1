@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/13 19:23:21 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/21 08:16:12 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/03/15 02:58:04 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ float	returnmax(float x, float y)
 		return (x);
 	return (y);
 }
-
 
 t_ray	generatePrimRay(int x, int y, t_env *e)
 {
@@ -91,7 +90,6 @@ bool	intersectSphere(t_ray *ray, t_object *object, float *dist)
 	return (true);
 }
 
-
 bool intersectPlan(t_ray *ray, t_object *object, float *dist)
 {
   float denom;
@@ -157,7 +155,7 @@ bool trace(t_ray *ray, t_env *e, t_object **hitObject, float *min)
           }
         }
       break;
-	  case 2:
+	  	case 2:
         if (intersectDisc(ray, current, &cdist)){
           if (cdist < *min){
             *min = cdist;
@@ -208,29 +206,24 @@ t_vector getColor(t_ray *ray, t_env *e, t_object *hitObject, float dist, int dep
 		le = dist;
 		lightFromHit = vector_sub(current->pos, hitPoint);
 		vectorNormalize(&lightFromHit);
-		reflectedRay = ray_new(hitPoint, lightFromHit);
+		reflectedRay = ray_new(vector_add(hitPoint, vector_scale(lightFromHit, 0.01)), lightFromHit);
 		useless = NULL;
-		//if (!trace(&reflectedRay, e, &useless, &le)){
-
-		  //Factor
+		if (!trace(&reflectedRay, e, &useless, &le)){
 		  factor = vector_dot(lightFromHit, normal);
 		  if (factor < 0)
 		    factor = 0;
-
-			color = vector_add(color,
-				vector_add(vector_scale(hitObject->color, factor * 0.9),vector_scale(hitObject->color, 0.1))
-			);
-			//}
+			color = vector_add_color(color,vector_scale(hitObject->color, factor));
+		}
 		current = current->next;
 	}
 
-	if (hitObject->reflection > 0 && depth < 6)
+	if (hitObject->reflection > 0 && depth < 9)
 	{
 		//ft_printf("%d", depth);
-		reflectedRay = ray_new(hitPoint, reflect(ray->dir,normal));
+		reflectedRay = ray_new(vector_add(hitPoint,vector_scale(reflect(ray->dir,normal),0.01) ), reflect(ray->dir,normal));
 		reflectedColor = castRay(&reflectedRay, e, depth + 1);
-
-		color = vector_add(color, vector_scale(reflectedColor, hitObject->reflection));
+		//ft_putnbr(depth);
+		color = vector_add_color(color, vector_scale(reflectedColor, hitObject->reflection));
 	}
   return (color);
 }
@@ -251,7 +244,8 @@ t_vector castRay(t_ray *ray, t_env *e, int depth)
   min = 20000;
   if (trace(ray, e, &hitObject, &min))
   {
-    color = getColor(ray, e, hitObject, min, depth);
+		//if (min > 0.00001)
+    	color = getColor(ray, e, hitObject, min, depth);
     //printf(" %p %f\n", hitObject, min);
     //color = hitObject->color;
   }
@@ -284,8 +278,8 @@ void	raytrace(t_env *e)
           	draw_dot(e, x+xx, y+yy, rgb2i(hitColor.x, hitColor.y, hitColor.z));
         }
       }
-      y+=e->resolution;
+      y += e->resolution;
     }
-    x+=e->resolution;
+    x += e->resolution;
   }
 }

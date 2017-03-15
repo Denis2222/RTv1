@@ -1,0 +1,24 @@
+{
+  "name": "My Scene",
+  "camera": {
+    "origin": [0,0,0],
+    "width":1000,
+    "height":1000
+  },
+
+  "lights": [
+    {
+      "origin": [5,5,5],
+      "type":"diffuse",
+      "color": [1,1,1]
+    }
+  ],
+  "objects": [
+    {
+      "name":"Awesome sphere",
+      "type":"sphere",
+      "position":[2,2,2],
+      "radius":30
+    }
+  ]
+}
