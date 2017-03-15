@@ -1,41 +1,48 @@
 .PHONY: libft minilibx
 
 SRCS = draw.c \
-	   keyboard.c \
-	   hook.c \
-		 raytrace.c \
-		 vector/vector.c \
-		 intersect.c \
-		 object.c \
-		 color.c \
-	   main.c \
-	   light.c \
-		 ray.c \
-		 parser.c \
-		 matrix.c
+		   keyboard.c \
+		   hook.c \
+			 raytrace.c \
+			 vector.c \
+			 intersect.c \
+			 object.c \
+			 color.c \
+		   main.c \
+		   light.c \
+			 ray.c \
+			 parser.c \
+			 matrix.c
 
 NAME = rtv1
-GCC_FLAG = #-Wall #-Werror #-Wextra -g
+GCC_FLAG = #-Wall -Werror -Wextra -g
 CC = gcc $(GCC_FLAG)
+RM = rm -rf
 
-OBJS = $(SRCS:.c=.o)
+SRCDIR = ./src
+OBJDIR = ./obj
 
-all: libft minilibx $(NAME)
+LIBFT = ./libft/libft.a
+OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
 
-libft:
-	make -C ./libft/
+all: $(NAME)
+
+$(LIBFT):
+	@make -C libft
+	@echo $(SRC_LIB_O)
 
 minilibx:
 	make -C ./minilibx/
 
-$(%.o): $(%.c)
-	$(CC) -o $@ -c $^
+$(addprefix $(OBJDIR)/, %.o): $(addprefix $(SRCDIR)/, %.c)
+	@mkdir -p $(OBJDIR)
+	@$(CC) -o $@ -c $^
 
-$(NAME): $(OBJS)
-	$(CC) -o $@ $^ -Lminilibx/ -lmlx -framework OPENGL -framework Appkit -Llibft -lft
+$(NAME): $(OBJS) $(LIBFT) minilibx
+	$(CC) -o $(NAME) $(OBJS) -lft -L./libft/ -Lminilibx/ -lmlx -framework OPENGL -framework Appkit
 
 clean:
-	rm -f $(OBJS)
+	@$(RM) $(OBJDIR)
 
 fclean: clean
 	rm -f $(NAME)

@@ -6,11 +6,11 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/16 01:46:57 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/03/15 01:35:08 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/03/15 05:16:45 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../rt.h"
+#include "rt.h"
 /*
 void multVecMatrix(t_vector *src, t_vector *dst)
 {
@@ -129,6 +129,11 @@ t_vector vector_sub(t_vector v1, t_vector v2)
 t_vector vector_scale(t_vector v, float r)
 {
   return vector_new(v.x * r, v.y * r, v.z * r);
+}
+
+float vector_length(t_vector v)
+{
+	return (sqrtf(v.x * v.x + v.y * v.y + v.z * v.z));
 }
 
 float vector_dot(t_vector v1, t_vector v2)

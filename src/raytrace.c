@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/13 19:23:21 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/03/15 02:58:04 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/03/15 07:08:23 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,16 +94,31 @@ bool intersectPlan(t_ray *ray, t_object *object, float *dist)
 {
   float denom;
   float t;
-  denom = vector_dot(object->dir, ray->dir);
-  //printf("%f\n", denom);
-  if (denom > 0.01) {
 
+  denom = vector_dot(object->dir, ray->dir);
+  if (denom > 0.00001) {
      t_vector length = vector_sub(object->pos, ray->start);
      t = vector_dot(length, ray->dir) / denom;
      if (t >= 0 && t < *dist)
       *dist = t;
      return (t >= 0);
- }
+ 	}
+
+/*
+	dot_ray_object = vector_dot(object->dir, ray->dir);
+	if (dot_ray_object > 0.00001) {
+		t = -1 * ((vector_dot(ray->start, object->dir) + vector_length(vector_sub(object->pos, ray->start)))/dot_ray_object);
+	}*/
+/*
+	dot_ray_object = vector_dot(object->dir, ray->dir);
+	if (dot_ray_object > 0.00001) {
+		//printf("OK");
+		t = vector_dot(object->dir, vector_sub(object->pos, ray->start))/dot_ray_object;
+		if (t >= 0)
+		 *dist = t;
+		return (t >= 0);
+	}
+*/
  return false;
 }
 
@@ -150,6 +165,7 @@ bool trace(t_ray *ray, t_env *e, t_object **hitObject, float *min)
       case 1:
         if (intersectPlan(ray, current, &cdist)){
           if (cdist < *min){
+						//printf("PLAN BETTER");
             *min = cdist;
             *hitObject = current;
           }
@@ -190,6 +206,7 @@ t_vector getColor(t_ray *ray, t_env *e, t_object *hitObject, float dist, int dep
 
   if (hitObject->type == PLAN || hitObject->type == DISC)
   {
+		//printf("HITobject type PLAN");
     normal = hitObject->dir;
   } else {
     // Normal = (VecHitPoint - VecObjectPos) / R
@@ -208,12 +225,12 @@ t_vector getColor(t_ray *ray, t_env *e, t_object *hitObject, float dist, int dep
 		vectorNormalize(&lightFromHit);
 		reflectedRay = ray_new(vector_add(hitPoint, vector_scale(lightFromHit, 0.01)), lightFromHit);
 		useless = NULL;
-		if (!trace(&reflectedRay, e, &useless, &le)){
+		//if (!trace(&reflectedRay, e, &useless, &le)){
 		  factor = vector_dot(lightFromHit, normal);
 		  if (factor < 0)
 		    factor = 0;
 			color = vector_add_color(color,vector_scale(hitObject->color, factor));
-		}
+		//}
 		current = current->next;
 	}
 
@@ -245,6 +262,8 @@ t_vector castRay(t_ray *ray, t_env *e, int depth)
   if (trace(ray, e, &hitObject, &min))
   {
 		//if (min > 0.00001)
+			//if (hitObject->type == PLAN && depth == 0)
+				//printf("PLANE:[%d] ", depth);
     	color = getColor(ray, e, hitObject, min, depth);
     //printf(" %p %f\n", hitObject, min);
     //color = hitObject->color;

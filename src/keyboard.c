@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/21 13:52:36 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/02/21 04:12:58 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/03/15 06:36:40 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,19 @@ void	key_bind(t_env *e)
 			e->camera.pos.z += 1;
 	}
 
-	if (e->key[KEY_W]){
+	if (e->key[KEY_A]){
 			e->selectedLight->pos.x += 2;
 	}
 
-	if (e->key[KEY_S]){
+	if (e->key[KEY_D]){
 			e->selectedLight->pos.x -= 2;
 	}
 
-	if (e->key[KEY_A]){
+	if (e->key[KEY_W]){
 			e->selectedLight->pos.y += 2;
 	}
 
-	if (e->key[KEY_D]){
+	if (e->key[KEY_S]){
 			e->selectedLight->pos.y -= 2;
 	}
 

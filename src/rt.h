@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 15:02:25 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/03/15 01:35:17 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/03/15 06:56:14 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include <math.h>
 #include <stdbool.h>
 
-# include "libft/libft.h"
-# include "minilibx/mlx.h"
+# include "../libft/libft.h"
+# include "../minilibx/mlx.h"
 
 # define WIDTH 1100
 # define HEIGHT 800
@@ -162,19 +162,20 @@ void 			vectorRotate(t_vector *v, char type, double angle);
 t_vector 	vector_new(float x, float y, float z);
 t_vector 	vector_rand(int max, int neg);
 t_vector 	vector_add(t_vector v1, t_vector v2);
-t_vector vector_add_color(t_vector v1, t_vector v2);
+t_vector  vector_add_color(t_vector v1, t_vector v2);
 t_vector 	vector_sub(t_vector v1, t_vector v2);
 t_vector 	vector_scale(t_vector v, float scale);
+float     vector_length(t_vector v);
 float 		vector_dot(t_vector v1, t_vector v2);
 void			vectorNormalize(t_vector *v);
-t_vector reflect(t_vector I,t_vector N);
+t_vector  reflect(t_vector I,t_vector N);
 
 void 			vectorPrint(t_vector vector);
 
 t_object 	*object_new(n_type type, float x, float y, float z);
 t_object 	*object_add(t_object **lst, t_object *new);
 t_object 	*object_new_random(n_type type);
-t_object 	*object_new_plane(float x, float y, float z, float rx, float ry, float rz);
+t_object 	*object_new_plane(t_vector pos, t_vector dir, t_vector color);
 t_object 	*object_new_disc(float x, float y, float z, float rx, float ry, float rz);
 int 			object_count(t_object *lst);
 

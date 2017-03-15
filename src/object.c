@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/16 17:35:31 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/03/15 02:52:57 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/03/15 07:06:11 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_object *object_new(n_type type, float x, float y, float z) {
   return (new);
 }
 
-t_object *object_new_plane(float x, float y, float z, float rx, float ry, float rz) {
+t_object *object_new_plane(t_vector pos, t_vector dir, t_vector color) {
   t_object *new;
   n_type type;
 
@@ -54,15 +54,15 @@ t_object *object_new_plane(float x, float y, float z, float rx, float ry, float 
   if (!new)
     return (NULL);
 
-  new->pos = vector_new(x, y, z);
-  new->dir = vector_new(rx,ry,rz);
+  new->pos = pos;
+  new->dir = dir;
 
   vectorNormalize(&new->dir);
 
   new->type = type;
   new->radius = 0;
   new->albedo = 0.18;
-  new->color = vector_new(0, 0, 200);
+  new->color = color;
   new->reflection = 0;
   new->ambient = 0;
   new->next = NULL;

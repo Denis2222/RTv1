@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 15:03:39 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/03/15 02:50:41 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/03/15 07:06:20 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void init(t_env *e)
 
 	e->objects = NULL;
 
-	//e->objects = object_add(&(e->objects), object_new_plane(0, 0, -100, 0, 0, 1));
-	e->objects = object_add(&(e->objects), object_new(SPHERE, 0, 1, 0));
+
+	//e->objects = object_add(&(e->objects), object_new(SPHERE, 0, 1, 0));
 /*
 	specialObject = object_new(SPHERE, -1, 0, -4);
 	specialObject->reflection = 0.4;
@@ -35,11 +35,13 @@ void init(t_env *e)
 
 
 	t_object *specialObject;
-	specialObject = object_new(SPHERE, 1, 1, 0);
-	specialObject->reflection =1;
+	specialObject = object_new(SPHERE, 1, 1, 20);
+	specialObject->reflection =0.3;
 	specialObject->color = vector_new(35, 200,86);
 	e->objects = object_add(&(e->objects), specialObject);
 
+	e->objects = object_add(&(e->objects), object_new_plane(vector_new(0,0,2), vector_new(0,0,-1), vector_new(150,150,250)));
+	e->objects = object_add(&(e->objects), object_new_plane(vector_new(-1,0,0), vector_new(-1,0,0), vector_new(250,0,150)));
 
 	//e->objects = object_add(&(e->objects), object_new(SPHERE, 1, -2, -2));
 
@@ -51,7 +53,11 @@ void init(t_env *e)
 	// e->objects = object_add(&(e->objects), object_new_random(SPHERE));
 
 	e->keyhook = 0;
-	e->lights = light_add(&(e->lights), light_new(0,0,100));
+	e->lights = light_add(&(e->lights), light_new(0,0,0));
+
+	e->lights = light_add(&(e->lights), light_new(-10,0,0));
+
+	e->lights = light_add(&(e->lights), light_new(20,0,0));
 	//e->lights = light_add(&(e->lights), light_new(0,100,0));
 
 	e->bgcolor = vector_new(0,0,0);
@@ -64,11 +70,11 @@ void init(t_env *e)
 
 	e->camera.pos.x = 0;
 	e->camera.pos.y = 0;
-	e->camera.pos.z = 1;
+	e->camera.pos.z = 13;
 
 	e->camera.dir.x = 0;
 	e->camera.dir.y = 0;
-	e->camera.dir.z = -1;
+	e->camera.dir.z = 1;
 
 	  //vectorPrint(&e->scene.objects[0].pos);
 }
